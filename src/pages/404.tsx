@@ -1,9 +1,9 @@
-import { useLocale } from '@/locales';
+import { useAppIntl } from '@/locales';
 import { Button, Result } from 'antd';
 import { useNavigate } from 'react-router';
 
 const NotFoundPage: React.FC = () => {
-  const { f } = useLocale();
+  const { f } = useAppIntl();
   const navigate = useNavigate();
 
   return (

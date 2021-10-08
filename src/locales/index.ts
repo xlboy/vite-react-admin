@@ -1,7 +1,9 @@
+import { getAppState } from '@/store';
 import type { GetStrTowCharRangeContent } from '@/types/utils';
+import { createIntl } from '@formatjs/intl';
 import type { Locale as AntdLocale } from 'antd/lib/locale-provider';
-import type { MessageDescriptor } from 'react-intl';
-import { useIntl } from 'react-intl';
+import type { IntlShape, MessageDescriptor } from 'react-intl';
+import { createIntlCache, useIntl } from 'react-intl';
 import { rootAntdLocale, rootAppLocale } from './rootLocale';
 import type { AppLocaleId, LocaleTypes } from './types';
 
@@ -9,9 +11,9 @@ export const getAntdLocale = (type: LocaleTypes) => rootAntdLocale[type] as unkn
 
 export const getAppLocale = (type: LocaleTypes): Record<string, string> => {
   const localeIndexMap: Record<LocaleTypes, number> = {
-    zh_CN: 0,
-    zh_TW: 1,
-    en_US: 2
+    'zh-CN': 0,
+    'zh-TW': 1,
+    'en-US': 2
   };
 
   return Object.entries(rootAppLocale).reduce(
@@ -29,8 +31,11 @@ interface _FormatMessageProps extends MessageDescriptor {
 
 type FormatMessageProps = (descriptor: _FormatMessageProps, options?: Record<string, string>) => string;
 
-export const useLocale = () => {
-  const { formatMessage: _formatMessage, ...rest } = useIntl();
+/**
+ * @description 国际化插件的类型加工，完善ts提示
+ */
+const intlTypeProcess = (intl: IntlShape) => {
+  const { formatMessage: _formatMessage, ...rest } = intl;
   const formatMessage: FormatMessageProps = _formatMessage;
 
   return {
@@ -41,4 +46,23 @@ export const useLocale = () => {
       options?: Record<PlaceholderKeys extends string ? PlaceholderKeys : string, string>
     ) => formatMessage({ id }, options)
   };
+};
+
+export const useAppIntl = () => {
+  const intl = useIntl();
+
+  return intlTypeProcess(intl);
+};
+
+export const getAppIntl = () => {
+  const {
+    system: { locale: currentLocale }
+  } = getAppState();
+
+  const intl = createIntl({
+    locale: currentLocale,
+    messages: getAppLocale(currentLocale)
+  });
+
+  return intlTypeProcess(intl as IntlShape);
 };

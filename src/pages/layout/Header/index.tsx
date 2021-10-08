@@ -1,6 +1,5 @@
 import appConfig from '@/configs/app';
-import { useLocale } from '@/locales';
-import type { LocaleTypes } from '@/locales/types';
+import { useAppIntl } from '@/locales';
 import { matchCurrentRoutes } from '@/router/utils';
 import { useAppDispatch, useAppState } from '@/store';
 import rootActions from '@/store/rootActions';
@@ -22,7 +21,7 @@ interface LayoutHeaderProps {}
 const LayoutHeader: React.FC<LayoutHeaderProps> = () => {
   const { isMobile, isMenuCollapsed, locale: currentLocale } = useAppState(state => state.system);
   const storeDispatch = useAppDispatch();
-  const { f } = useLocale();
+  const { f } = useAppIntl();
   const locationVal = useLocation();
 
   const routeInfos: RouteInfos = useMemo(() => {

@@ -1,10 +1,10 @@
-import { useLocale } from '@/locales';
+import { useAppIntl } from '@/locales';
 import { Button, Dropdown, Menu } from 'antd';
 
 interface UserMenuProps {}
 
 const UserMenu: React.FC<UserMenuProps> = () => {
-  const { f } = useLocale();
+  const { f } = useAppIntl();
 
   const DropdownMenu = (): JSX.Element => (
     <Menu>

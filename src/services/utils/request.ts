@@ -19,12 +19,13 @@ AxiosInstance.interceptors.request.use(
 
 AxiosInstance.interceptors.response.use(
   config => {
-    console.log(config);
-
-    if (config?.data) {
+    switch (config.status) {
+      case 401:
+        // message.warn('')
+        break;
     }
 
-    return config?.data;
+    return config.data;
   },
   error => {
     let errorMessage = '系统异常';

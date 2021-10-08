@@ -12,7 +12,7 @@ interface SystemState {
 }
 
 const initialState: SystemState = {
-  locale: (localStorage.getItem(appConfig.cacheKey.locale) ?? 'zh_CN') as LocaleTypes,
+  locale: (localStorage.getItem(appConfig.cacheKey.locale) ?? 'zh-CN') as LocaleTypes,
   cacheTags: [],
   activeTag: null,
   isMobile: false,

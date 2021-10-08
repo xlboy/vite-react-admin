@@ -10,6 +10,8 @@ class UserService extends BaseService implements UserInterface {
 
   login: UserInterface['login'] = params =>
     this.request({
+      baseURL: '/mock',
+      method: 'GET',
       url: '/login',
       params
     });

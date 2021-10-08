@@ -1,4 +1,4 @@
-import { useLocale } from '@/locales';
+import { useAppIntl } from '@/locales';
 import type { RouteProps } from 'react-router';
 import { Route as NormalRoute } from 'react-router-dom';
 import AuthRoute from './RouteAuth';
@@ -10,7 +10,7 @@ interface RouteWrapperProps extends RouteProps {
 
 const RouteWrapper: React.FC<RouteWrapperProps> = props => {
   const { auth, ...routeProps } = props;
-  const { f } = useLocale();
+  const { f } = useAppIntl();
   const WithRoute = auth ? AuthRoute : NormalRoute;
 
   const routeInfo = matchCurrentRoute();

@@ -13,6 +13,8 @@ export const useAppDispatch = () => useDispatch<AppDispatch>();
 
 export const useAppState = <T extends (state: AppState) => any>(selector: T): ReturnType<T> => useSelector(selector);
 
+export const getAppState = (): AppState => store.getState();
+
 // export const createStoreAsyncThunk = <ThunkArg,ThunkApiConfig extends AsyncThunkConfig = {}, T extends (arg: ThunkArg,) => any>(
 //   typePrefix: string,
 //   payloadCreator: T,

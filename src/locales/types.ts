@@ -1,7 +1,10 @@
 import type { rootAppLocale } from './rootLocale';
 import type titleLocale from './modules/title';
 
-export type LocaleTypes = 'zh_CN' | 'zh_TW' | 'en_US';
+/**
+ * @see 更多国家地区代码请阅：https://blog.csdn.net/shenenhua/article/details/79150053
+ */
+export type LocaleTypes = 'zh-CN' | 'zh-TW' | 'en-US';
 
 export type AppLocaleId = keyof typeof rootAppLocale;
 

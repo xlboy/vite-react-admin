@@ -18,7 +18,7 @@ export const rootAppLocale = {
 } as const;
 
 export const rootAntdLocale: Record<LocaleTypes, PickerLocale> = {
-  en_US: antdLocaleEnUS,
-  zh_TW: antdLocaleZhTW,
-  zh_CN: antdLocaleZhCN
+  'en-US': antdLocaleEnUS,
+  'zh-TW': antdLocaleZhTW,
+  'zh-CN': antdLocaleZhCN
 };

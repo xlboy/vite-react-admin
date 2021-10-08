@@ -21,18 +21,18 @@ const languageIconStyle: React.CSSProperties = { width: 20, height: 25 };
 
 const languageOptions: InUnionFillArrayItem<LanguageOption, LocaleTypes> = [
   {
-    type: 'zh_CN',
+    type: 'zh-CN',
     label: '简体中文',
     iconComponent: <IconZhCN style={languageIconStyle} />
   },
 
   {
-    type: 'zh_TW',
+    type: 'zh-TW',
     label: '繁体中文',
     iconComponent: <IconZhCN style={languageIconStyle} />
   },
   {
-    type: 'en_US',
+    type: 'en-US',
     label: 'English',
     iconComponent: <IconEnUS style={languageIconStyle} />
   }
