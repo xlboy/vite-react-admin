@@ -8,6 +8,9 @@ const pathResolve = (dir: string) => resolve(__dirname, '.', dir);
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    host: '0.0.0.0'
+  },
   plugins: [
     react(),
     // https://github.com/pd4d10/vite-plugin-svgr

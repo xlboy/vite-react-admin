@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import type { AxiosRequestConfig } from 'axios';
 import axios from 'axios';
-import type { APIBaseFormat } from '../types/base';
+import type { APIBaseFormat } from '../types';
 
 const AxiosInstance = axios.create({
   baseURL: '/v1',

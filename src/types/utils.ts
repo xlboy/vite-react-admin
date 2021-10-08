@@ -44,3 +44,16 @@ export type GetStrTowCharRangeContent<
       : GetStrTowCharRangeContent<RestS, OneChar, TowChar, '', ContentArray, false>
     : ContentArray[number]
   : '第一个或第二个字符的长度不可超过1';
+
+/**
+ * 取函数的所有参数，将返回数组类型
+ * @example
+ *
+ * const fn = (a: number, b: Record<string, number>) => {};
+ *
+ * type FnArgs = GetFnArgs<typeof fn>
+ * // FnArgs = [a: number, b: Record<string, number>]
+ * // FnArgs[0] = number
+ * // FnArgs[1] = Record<string, number>
+ */
+export type GetFnArgs<Fn extends (...args: any[]) => any> = Fn extends (...args: infer Args) => any ? Args : never;

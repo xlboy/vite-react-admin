@@ -1,1 +1,1 @@
-export { default as userAPI } from './modules/user';
+export { default as UserService } from './modules/user/user.service';
