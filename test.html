@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button onclick="openMe()">来，打我1</button>
+    <button onclick="openMe2()">来，打我2</button>
+    <script>
+      function openMe() {
+        const mockLoginTab = window.open('', 'mockLoginBusinessTab');
+        mockLoginTab.location.href = 'baiu.com';
+      }
+      function openMe2() {
+        const mockLoginTab = window.open('', 'mockLoginTraderTab');
+      }
+    </script>
+  </body>
+</html>

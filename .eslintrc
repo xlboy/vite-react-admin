@@ -1,0 +1,46 @@
+{
+  "extends": [
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "plugins": ["prettier", "react", "react-hooks"],
+  // "off" 或 0 - 关闭规则
+  // "warn" 或 1 - 开启规则，使用警告级别的错误：warn (不会导致程序退出)
+  // "error" 或 2 - 开启规则，使用错误级别的错误：error (当被触发的时候，程序会退出)
+  "rules": {
+    "prettier/prettier": 2,
+    "react-hooks/rules-of-hooks": 2,
+    "react-hooks/exhaustive-deps": 1,
+    "react/prop-types": 0,
+    "react/display-name": 0,
+    "react/react-in-jsx-scope": 0,
+    // typescript-eslint 相关请阅： https://github.com/typescript-eslint/typescript-eslint/tree/v4.32.0/packages/eslint-plugin
+    "@typescript-eslint/no-use-before-define": 0,
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/camelcase": 0,
+    "@typescript-eslint/explicit-member-accessibility": 0,
+    "@typescript-eslint/ban-ts-ignore": 0,
+    "@typescript-eslint/no-non-null-assertion": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-empty-interface": 0,
+    "@typescript-eslint/explicit-module-boundary-types": 0,
+    "@typescript-eslint/consistent-type-imports": 2,
+    "@typescript-eslint/ban-types": 0,
+    /* 
+      https://eslint.org/docs/rules/padding-line-between-statements#rule-details 
+      and
+      https://github.com/typescript-eslint/typescript-eslint/blob/v4.32.0/packages/eslint-plugin/docs/rules/padding-line-between-statements.md
+    */
+    "@typescript-eslint/padding-line-between-statements": [
+      "error",
+      { "blankLine": "always", "prev": ["const", "let", "var", "block-like", "import", "interface"], "next": "*" },
+      { "blankLine": "always", "prev": "*", "next": ["return", "export"] },
+      { "blankLine": "always", "prev": "import", "next": ["return", "export"] },
+      { "blankLine": "any", "prev": ["const", "let", "var"], "next": ["const", "let", "var"] },
+      { "blankLine": "any", "prev": ["import"], "next": ["import"] }
+    ],
+    "prefer-spread": 0
+  }
+}
