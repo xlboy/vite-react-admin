@@ -3,7 +3,8 @@ import { useAppDispatch } from '@/store';
 import rootActions from '@/store/rootActions';
 import { Layout } from 'antd';
 import React, { useEffect } from 'react';
-import { Outlet } from 'react-router';
+import { Outlet, useNavigate } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import Header from './Header';
 import './index.less';
 import Menu from './Menu';
@@ -14,6 +15,8 @@ interface LayoutPageProps {}
 
 const LayoutPage: React.FC<LayoutPageProps> = () => {
   const storeDispatch = useAppDispatch();
+  const locationVal = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleMobileSize = () => {
@@ -31,6 +34,12 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
     window.onresize = handleMobileSize;
     handleMobileSize();
   }, []);
+
+  useEffect(() => {
+    if (locationVal.pathname === '/') {
+      navigate('dashboard');
+    }
+  }, [locationVal]);
 
   return (
     <Layout className="app-layout">
