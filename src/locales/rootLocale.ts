@@ -3,6 +3,7 @@ import antdLocaleZhCN from 'antd/lib/calendar/locale/zh_CN';
 import antdLocaleZhTW from 'antd/lib/calendar/locale/zh_TW';
 import type { PickerLocale } from 'antd/lib/date-picker/generatePicker';
 import complexContentLocale from './modules/complexContent';
+import httpStatusLocale from './modules/httpStatus';
 import menuLocale from './modules/menu';
 import simpleContentLocale from './modules/simpleContent';
 import systemLocale from './modules/system';
@@ -14,7 +15,8 @@ export const rootAppLocale = {
   ...menuLocale,
   ...simpleContentLocale,
   ...systemLocale,
-  ...titleLocale
+  ...titleLocale,
+  ...httpStatusLocale
 } as const;
 
 export const rootAntdLocale: Record<LocaleTypes, PickerLocale> = {

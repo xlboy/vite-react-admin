@@ -1,3 +1,4 @@
+import { getAppIntl } from '@/locales';
 import { message } from 'antd';
 import type { AxiosRequestConfig } from 'axios';
 import axios from 'axios';
@@ -19,9 +20,21 @@ AxiosInstance.interceptors.request.use(
 
 AxiosInstance.interceptors.response.use(
   config => {
+    const { f } = getAppIntl();
+
     switch (config.status) {
       case 401:
-        // message.warn('')
+        message.warn(f(401));
+        location.replace('/');
+        break;
+
+      case 403:
+        message.warn(f(403));
+        location.replace('/');
+        break;
+
+      case 404:
+        message.warn(f(404));
         break;
     }
 

@@ -8,6 +8,13 @@ class UserService extends BaseService implements UserInterface {
     super(serviceModuleName);
   }
 
+  getMenuList: UserInterface['getMenuList'] = () =>
+    this.request({
+      baseURL: '/mock',
+      method: 'GET',
+      url: '/menu'
+    });
+
   login: UserInterface['login'] = params =>
     this.request({
       baseURL: '/mock',

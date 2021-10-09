@@ -12,7 +12,7 @@ export default [
     }
   },
   {
-    url: '/mock/user/login',
+    url: '/mock/user/menu',
     method: 'get',
     timeout: 50,
     response: {
