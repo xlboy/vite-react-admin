@@ -1,8 +1,8 @@
 import { useAppIntl } from '@/locales';
+import type { RouteItem } from '@/router';
 import { matchKeyRoutes } from '@/router/utils';
 import { rootActions, useAppDispatch, useAppState } from '@/store';
 import type { UserState } from '@/store/types/user';
-import type { MenuProps } from 'antd';
 import { Drawer, Layout, Menu } from 'antd';
 import React from 'react';
 import './index.less';
@@ -13,13 +13,20 @@ const { Sider } = Layout;
 interface LayoutMenu {}
 
 const LayoutMenu: React.FC<LayoutMenu> = () => {
-  const { isMenuCollapsed, isMobile } = useAppState(state => state.system);
+  const { isMenuCollapsed, isMobile, activeTagId } = useAppState(state => state.system);
   const { menuList } = useAppState(state => state.user);
   const { f } = useAppIntl();
   const storeDispatch = useAppDispatch();
 
-  const handleMenuClick: MenuProps['onClick'] = info => {
-    info.key;
+  const handleMenuClick = (routeInfo: RouteItem) => {
+    const isJump = routeInfo.element;
+
+    if (isJump) {
+      const { setActiveTagId, addActiveTagId } = rootActions.system;
+
+      storeDispatch(addActiveTagId(routeInfo.access!));
+      storeDispatch(setActiveTagId(routeInfo.access!));
+    }
   };
 
   const handleMenuClose = (): void => {
@@ -37,21 +44,27 @@ const LayoutMenu: React.FC<LayoutMenu> = () => {
       }
 
       const { access, titleId, iconElement } = routeInfo;
-      const isExistChildren = menu.children !== undefined && menu.children.length !== 0;
+      const { children: menuChildren } = menu;
+      const isExistChildren = menuChildren !== undefined && menuChildren.length !== 0;
 
       return isExistChildren ? (
-        <SubMenu key={access} title={f(titleId!)} icon={iconElement ?? null}>
-          {renderTreeMenu(menu.children!)}
+        <SubMenu
+          key={access}
+          title={f(titleId!)}
+          icon={iconElement ?? null}
+          onTitleClick={handleMenuClick.bind(null, routeInfo)}
+        >
+          {renderTreeMenu(menuChildren)}
         </SubMenu>
       ) : (
-        <Menu.Item key={access} icon={iconElement ?? null}>
+        <Menu.Item key={access} icon={iconElement ?? null} onClick={handleMenuClick.bind(null, routeInfo)}>
           {f(titleId!)}
         </Menu.Item>
       );
     });
 
   const InsideComponent = (): JSX.Element => (
-    <Menu theme="light" onClick={handleMenuClick} selectedKeys={[]} mode="inline" className="app-menu">
+    <Menu theme="light" selectedKeys={activeTagId ? [activeTagId] : []} mode="inline" className="app-menu">
       {renderTreeMenu(menuList)}
     </Menu>
   );

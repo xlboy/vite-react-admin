@@ -63,6 +63,13 @@ const systemSlice = createSlice({
         }
       }
     },
+    addActiveTagId(state, action: PayloadAction<string>) {
+      const activeTagId = action.payload;
+
+      if (!state.cacheTagIds.includes(activeTagId)) {
+        state.cacheTagIds.push(activeTagId);
+      }
+    },
     setActiveTagId(state, action: PayloadAction<string>) {
       const activeTagId = action.payload;
 
