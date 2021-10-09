@@ -27,7 +27,7 @@ export type LengthOfString<
  */
 
 export type GetStrTowCharRangeContent<
-  Str extends string,
+  Str extends string | number,
   OneChar extends string,
   TowChar extends string,
   DefaultStr extends string = '',

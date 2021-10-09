@@ -1,8 +1,10 @@
-import { useAppDispatch, useAppState } from '@/store';
-import rootActions from '@/store/rootActions';
+import { useAppIntl } from '@/locales';
+import { matchKeyRoutes } from '@/router/utils';
+import { rootActions, useAppDispatch, useAppState } from '@/store';
+import type { UserState } from '@/store/types/user';
 import type { MenuProps } from 'antd';
 import { Drawer, Layout, Menu } from 'antd';
-import React, { memo } from 'react';
+import React from 'react';
 import './index.less';
 
 const { SubMenu } = Menu;
@@ -12,6 +14,8 @@ interface LayoutMenu {}
 
 const LayoutMenu: React.FC<LayoutMenu> = () => {
   const { isMenuCollapsed, isMobile } = useAppState(state => state.system);
+  const { menuList } = useAppState(state => state.user);
+  const { f } = useAppIntl();
   const storeDispatch = useAppDispatch();
 
   const handleMenuClick: MenuProps['onClick'] = info => {
@@ -24,28 +28,31 @@ const LayoutMenu: React.FC<LayoutMenu> = () => {
     storeDispatch(setIsMenuCollapsed(true));
   };
 
-  const InsideComponent = (): JSX.Element => (
-    <Menu theme="light" onClick={handleMenuClick} selectedKeys={['1']} mode="inline" className="app-menu">
-      <SubMenu key="sub1" title="Navigation One">
-        <Menu.Item key="1">Option 1</Menu.Item>
-        <Menu.Item key="2">Option 2</Menu.Item>
-        <Menu.Item key="3">Option 3</Menu.Item>
-        <Menu.Item key="4">Option 4</Menu.Item>
-      </SubMenu>
-      <SubMenu key="sub2" title="Aavigation Two">
-        <Menu.Item key="5">Option 5</Menu.Item>
-        <Menu.Item key="6">Option 6</Menu.Item>
-        <SubMenu key="sub3" title="Submenu">
-          <Menu.Item key="7">Option 7</Menu.Item>
-          <Menu.Item key="8">Option 8</Menu.Item>
+  const renderTreeMenu = (menuList: UserState['menuList']): React.ReactNode =>
+    menuList.map(menu => {
+      const routeInfo = matchKeyRoutes('access', menu.access);
+
+      if (!routeInfo) {
+        throw new Error('菜单权限存在问题，menuList中存在routes未对应上的access值');
+      }
+
+      const { access, titleId, iconElement } = routeInfo;
+      const isExistChildren = menu.children !== undefined && menu.children.length !== 0;
+
+      return isExistChildren ? (
+        <SubMenu key={access} title={f(titleId!)} icon={iconElement ?? null}>
+          {renderTreeMenu(menu.children!)}
         </SubMenu>
-      </SubMenu>
-      <SubMenu key="sub4" title="Cavigation Three">
-        <Menu.Item key="9">Option 9</Menu.Item>
-        <Menu.Item key="10">Option 10</Menu.Item>
-        <Menu.Item key="11">Option 11</Menu.Item>
-        <Menu.Item key="12">Option 12</Menu.Item>
-      </SubMenu>
+      ) : (
+        <Menu.Item key={access} icon={iconElement ?? null}>
+          {f(titleId!)}
+        </Menu.Item>
+      );
+    });
+
+  const InsideComponent = (): JSX.Element => (
+    <Menu theme="light" onClick={handleMenuClick} selectedKeys={[]} mode="inline" className="app-menu">
+      {renderTreeMenu(menuList)}
     </Menu>
   );
 

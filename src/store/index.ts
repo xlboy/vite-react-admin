@@ -6,6 +6,10 @@ const store = configureStore({
   reducer: rootReducers
 });
 
+export { default as rootActions } from './rootActions';
+
+export { default as rootThunks } from './rootThunks';
+
 type AppState = ReturnType<typeof rootReducers>;
 type AppDispatch = typeof store.dispatch;
 
