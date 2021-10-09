@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import type { MenuItem } from '../types/user';
 
 interface UserState {
-  menuList: any[];
+  menuList: MenuItem[];
 }
 
 const initialState: UserState = {

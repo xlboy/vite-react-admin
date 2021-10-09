@@ -1,5 +1,5 @@
-import type UserInterface from './user.interface';
 import BaseService from '../base.service';
+import type UserInterface from './user.interface';
 
 const serviceModuleName = '/user';
 
