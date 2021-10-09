@@ -1,6 +1,6 @@
 import appConfig from '@/configs/app';
 import { useAppDispatch } from '@/store';
-import rootActions from '@/store/rootActions';
+import { rootActions } from '@/store/';
 import { Layout } from 'antd';
 import React, { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router';

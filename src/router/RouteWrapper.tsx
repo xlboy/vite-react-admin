@@ -1,8 +1,9 @@
 import { useAppIntl } from '@/locales';
+import { KeepAlive } from 'react-activation';
 import type { RouteProps } from 'react-router';
 import { Route as NormalRoute } from 'react-router-dom';
 import AuthRoute from './RouteAuth';
-import { matchCurrentRoute } from './utils';
+import { matchCurrentPageRoute } from './utils';
 
 interface RouteWrapperProps extends RouteProps {
   auth?: boolean;
@@ -11,16 +12,23 @@ interface RouteWrapperProps extends RouteProps {
 const RouteWrapper: React.FC<RouteWrapperProps> = props => {
   const { auth, ...routeProps } = props;
   const { f } = useAppIntl();
+
   const WithRoute = auth ? AuthRoute : NormalRoute;
 
-  const routeInfo = matchCurrentRoute();
-  const routeTitleId = routeInfo?.route.titleId;
+  const routeInfo = matchCurrentPageRoute();
+  const { titleId: routeTitleId, keepAlive: isKeepAlive, access } = routeInfo!.route;
 
-  if (routeTitleId) {
-    document.title = f(routeTitleId);
+  if (routeTitleId !== undefined) {
+    document.title = f(routeTitleId!);
   }
 
-  return <WithRoute {...routeProps} />;
+  return isKeepAlive === true ? (
+    <KeepAlive key={access ?? ''}>
+      <WithRoute {...routeProps} />
+    </KeepAlive>
+  ) : (
+    <WithRoute {...routeProps} />
+  );
 };
 
 export default RouteWrapper;

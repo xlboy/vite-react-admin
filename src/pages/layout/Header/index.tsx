@@ -1,8 +1,8 @@
 import appConfig from '@/configs/app';
 import { useAppIntl } from '@/locales';
-import { matchCurrentRoutes } from '@/router/utils';
+import { matchCurrentPageRoutes } from '@/router/utils';
 import { useAppDispatch, useAppState } from '@/store';
-import rootActions from '@/store/rootActions';
+import { rootActions } from '@/store';
 import { Layout, message } from 'antd';
 import { useMemo } from 'react';
 import { useLocation } from 'react-router';
@@ -25,7 +25,7 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = () => {
   const locationVal = useLocation();
 
   const routeInfos: RouteInfos = useMemo(() => {
-    const matchResult = matchCurrentRoutes();
+    const matchResult = matchCurrentPageRoutes();
 
     return (
       matchResult?.map(({ pathname, route: { titleId } }) => ({

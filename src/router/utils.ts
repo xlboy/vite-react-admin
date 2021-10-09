@@ -5,7 +5,7 @@ import type { RouteItem } from '.';
 import { routes } from '.';
 
 interface CurrentRouteMath extends RouteMatch {
-  route: RouteMatch['route'] & Pick<RouteItem, 'titleId'>;
+  route: RouteMatch['route'] & RouteItem;
 }
 
 const getPathname = () => {
@@ -19,7 +19,7 @@ const getPathname = () => {
  * @description 匹配当前路由的层级信息
  * @see https://github.com/remix-run/react-router/blob/dev/docs/api-reference.md#matchroutes
  */
-export const matchCurrentRoutes = (): CurrentRouteMath[] | null => {
+export const matchCurrentPageRoutes = (): CurrentRouteMath[] | null => {
   return matchRoutes(routes as RouteObject[], getPathname());
 };
 
@@ -27,7 +27,7 @@ export const matchCurrentRoutes = (): CurrentRouteMath[] | null => {
  * @description 匹配当前路由的信息
  * @see https://github.com/remix-run/react-router/blob/dev/docs/api-reference.md#matchroutes
  */
-export const matchCurrentRoute = (): CurrentRouteMath | null => {
+export const matchCurrentPageRoute = (): CurrentRouteMath | null => {
   const pathname = getPathname();
   const matchResult = matchRoutes(routes as RouteObject[], getPathname());
 
@@ -37,3 +37,29 @@ export const matchCurrentRoute = (): CurrentRouteMath | null => {
 
   return matchResult.at(-1) as CurrentRouteMath;
 };
+
+/**
+ * @description 根据某个key匹配出routes中的内容
+ */
+export const matchKeyRoutes = (() => {
+  let flatRoutes: RouteItem[] | null = null;
+
+  const handleFlatRoutes = (_routes: RouteItem[], _flatRoutes: RouteItem[] = []) => {
+    _routes.forEach(route => {
+      _flatRoutes.push(route);
+      if (route.children !== undefined && route.children.length !== 0) {
+        handleFlatRoutes(route.children, _flatRoutes);
+      }
+    });
+
+    return _flatRoutes;
+  };
+
+  const insideMatch = <K extends keyof RouteItem>(key: K, value: RouteItem[K]) => {
+    flatRoutes ??= handleFlatRoutes(routes);
+
+    return flatRoutes?.find(item => item[key] === value);
+  };
+
+  return insideMatch;
+})();

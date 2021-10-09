@@ -15,6 +15,7 @@
     "lodash": "^4.17.21",
     "mockjs": "^1.1.0",
     "react": "^17.0.2",
+    "react-activation": "^0.9.4",
     "react-dom": "^17.0.2",
     "react-intl": "^5.20.12",
     "react-redux": "^7.2.5",
@@ -42,5 +43,9 @@
     "vite": "^2.6.0",
     "vite-plugin-mock": "^2.9.6",
     "vite-plugin-svgr": "^0.4.0"
+  },
+  "engines": {
+    "node": ">=14.12.0",
+    "npm": "6.14.8"
   }
 }

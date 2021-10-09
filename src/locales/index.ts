@@ -3,7 +3,7 @@ import type { GetStrTowCharRangeContent } from '@/types/utils';
 import { createIntl } from '@formatjs/intl';
 import type { Locale as AntdLocale } from 'antd/lib/locale-provider';
 import type { IntlShape, MessageDescriptor } from 'react-intl';
-import { createIntlCache, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { rootAntdLocale, rootAppLocale } from './rootLocale';
 import type { AppLocaleId, LocaleTypes } from './types';
 
