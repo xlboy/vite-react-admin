@@ -20,22 +20,22 @@ export default [
       data: [
         {
           id: 'dashboard',
-          access: 'DASHBOARD',
+          key: 'DASHBOARD',
           name: '首页'
         },
         {
           id: 'permission',
-          access: 'PERMISSION',
+          key: 'PERMISSION',
           name: '权限测试',
           children: [
             {
               id: 'permission_test_1',
-              access: 'PERMISSION_TEST_1',
+              key: 'PERMISSION_TEST_1',
               name: '测试1'
             },
             {
               id: 'permission_test_2',
-              access: 'PERMISSION_TEST_2',
+              key: 'PERMISSION_TEST_2',
               name: '测试2'
             }
           ]

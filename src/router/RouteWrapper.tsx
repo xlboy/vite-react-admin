@@ -16,14 +16,14 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
   const WithRoute = auth ? AuthRoute : NormalRoute;
 
   const routeInfo = matchCurrentPageRoute();
-  const { titleId: routeTitleId, keepAlive: isKeepAlive, access } = routeInfo!.route;
+  const { titleId: routeTitleId, keepAlive: isKeepAlive, key } = routeInfo!.route;
 
   if (routeTitleId !== undefined) {
     document.title = f(routeTitleId!);
   }
 
   return isKeepAlive === true ? (
-    <KeepAlive key={access ?? ''}>
+    <KeepAlive key={key ?? ''}>
       <WithRoute {...routeProps} />
     </KeepAlive>
   ) : (

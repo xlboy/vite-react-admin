@@ -31,7 +31,7 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
 
     storeDispatch(
       switchOrAddActiveTag(
-        _.pick(matchResult?.route, ['access', 'titleId', 'path']) as Exclude<SystemState['activeTag'], null>
+        _.pick(matchResult?.route, ['key', 'titleId', 'path']) as Exclude<SystemState['activeTag'], null>
       )
     );
   };

@@ -5,6 +5,6 @@ export interface UserState {
 export interface MenuItem {
   id: string;
   name: string;
-  access: string;
+  key: string;
   children?: MenuItem[];
 }

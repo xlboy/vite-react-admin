@@ -57,10 +57,10 @@ const LayoutTagsView: React.FC<LayoutTagsViewProps> = props => {
   return (
     <div className="app-tags-view">
       {cacheTags.map(tag => {
-        const isActiveTag = tag.access === activeTag?.access;
+        const isActiveTag = tag.key === activeTag?.key;
 
         return (
-          <Dropdown key={tag.access} overlay={<RightClickTagMenu clickTag={tag} />} trigger={['contextMenu']}>
+          <Dropdown key={tag.key} overlay={<RightClickTagMenu clickTag={tag} />} trigger={['contextMenu']}>
             <Tag
               className="tag-item"
               closable={isActiveTag}

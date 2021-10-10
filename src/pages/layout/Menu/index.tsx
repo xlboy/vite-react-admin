@@ -27,7 +27,7 @@ const LayoutMenu: React.FC<LayoutMenu> = () => {
     if (isJump) {
       const { switchOrAddActiveTag } = rootActions.system;
 
-      storeDispatch(switchOrAddActiveTag(_.pick(routeInfo, ['access', 'titleId', 'path'])));
+      storeDispatch(switchOrAddActiveTag(_.pick(routeInfo, ['key', 'titleId', 'path'])));
     }
   };
 
@@ -39,19 +39,19 @@ const LayoutMenu: React.FC<LayoutMenu> = () => {
 
   const renderTreeMenu = (menuList: UserState['menuList']): React.ReactNode =>
     menuList.map(menu => {
-      const routeInfo = matchKeyRoutes('access', menu.access) as RouteInfo | undefined;
+      const routeInfo = matchKeyRoutes('key', menu.key) as RouteInfo | undefined;
 
       if (!routeInfo) {
-        throw new Error('菜单权限存在问题，menuList中存在routes未对应上的access值');
+        throw new Error('菜单权限存在问题，menuList中存在routes未对应上的key值');
       }
 
-      const { access, titleId, iconElement } = routeInfo;
+      const { key, titleId, iconElement } = routeInfo;
       const { children: menuChildren } = menu;
       const isExistChildren = menuChildren !== undefined && menuChildren.length !== 0;
 
       return isExistChildren ? (
         <SubMenu
-          key={access}
+          key={key}
           title={f(titleId!)}
           icon={iconElement ?? null}
           onTitleClick={handleMenuClick.bind(null, routeInfo)}
@@ -59,14 +59,14 @@ const LayoutMenu: React.FC<LayoutMenu> = () => {
           {renderTreeMenu(menuChildren)}
         </SubMenu>
       ) : (
-        <Menu.Item key={access} icon={iconElement ?? null} onClick={handleMenuClick.bind(null, routeInfo)}>
+        <Menu.Item key={key} icon={iconElement ?? null} onClick={handleMenuClick.bind(null, routeInfo)}>
           {f(titleId!)}
         </Menu.Item>
       );
     });
 
   const InsideComponent = (): JSX.Element => (
-    <Menu theme="light" selectedKeys={activeTag?.access ? [activeTag.access] : []} mode="inline" className="app-menu">
+    <Menu theme="light" selectedKeys={activeTag?.key ? [activeTag.key] : []} mode="inline" className="app-menu">
       {renderTreeMenu(menuList)}
     </Menu>
   );

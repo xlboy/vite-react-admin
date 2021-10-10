@@ -6,14 +6,14 @@ import LayoutPage from '@/pages/layout';
 import LoginPage from '@/pages/login';
 import PermissionTest1 from '@/pages/permission/Test1';
 import PermissionTest2 from '@/pages/permission/Test2';
-import { BarChartOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
+import { BarChartOutlined, LockOutlined } from '@ant-design/icons';
 import type { PartialRouteObject } from 'react-router';
 import { BrowserRouter, HashRouter, useRoutes } from 'react-router-dom';
 import RouteWrapper from './RouteWrapper';
 
 export interface RouteItem extends PartialRouteObject {
   iconElement?: JSX.Element;
-  access?: string;
+  key?: string;
   keepAlive?: boolean;
   titleId?: AppTitleLocaleId;
   children?: RouteItem[];
@@ -38,27 +38,27 @@ export const routes: RouteItem[] = [
         iconElement: <BarChartOutlined />,
         titleId: '首页',
         keepAlive: true,
-        access: 'DASHBOARD',
+        key: 'DASHBOARD',
         element: <RouteWrapper element={<DashboardPage />} />
       },
       {
         path: 'permission',
         iconElement: <LockOutlined />,
         titleId: '权限测试',
-        access: 'PERMISSION',
+        key: 'PERMISSION',
         children: [
           {
             path: '/',
             titleId: '测试1',
             keepAlive: true,
-            access: 'PERMISSION_TEST_1',
+            key: 'PERMISSION_TEST_1',
             element: <RouteWrapper element={<PermissionTest1 />} />
           },
           {
             path: '/test2',
             keepAlive: true,
             titleId: '测试2',
-            access: 'PERMISSION_TEST_2',
+            key: 'PERMISSION_TEST_2',
             element: <RouteWrapper element={<PermissionTest2 />} />
           }
         ]

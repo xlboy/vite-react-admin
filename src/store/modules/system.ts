@@ -36,8 +36,8 @@ const systemSlice = createSlice({
     },
     removeSpecifiedTag(state, action: PayloadAction<NormalTag>) {
       const specifiedTag = action.payload;
-      const specifiedTagIndex = state.cacheTags.findIndex(item => item.access === specifiedTag.access);
-      const currentActiveTagIndex = state.cacheTags.findIndex(item => item.access === state.activeTag?.access);
+      const specifiedTagIndex = state.cacheTags.findIndex(item => item.key === specifiedTag.key);
+      const currentActiveTagIndex = state.cacheTags.findIndex(item => item.key === state.activeTag?.key);
       const isFirstOne = specifiedTagIndex === 0;
       const isLastOne = specifiedTagIndex === state.cacheTags.length - 1;
 
@@ -61,7 +61,7 @@ const systemSlice = createSlice({
     },
     switchOrAddActiveTag(state, action: PayloadAction<NormalTag>) {
       const activeTag = action.payload;
-      const isExistTag = Boolean(state.cacheTags.find(item => item.access === activeTag.access));
+      const isExistTag = Boolean(state.cacheTags.find(item => item.key === activeTag.key));
 
       if (!isExistTag) {
         state.cacheTags.push(activeTag);
