@@ -28,6 +28,7 @@
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "@typescript-eslint/consistent-type-imports": 2,
     "@typescript-eslint/ban-types": 0,
+    "@typescript-eslint/no-empty-function": 0,
     /* 
       https://eslint.org/docs/rules/padding-line-between-statements#rule-details 
       and

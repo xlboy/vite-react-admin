@@ -1,9 +1,11 @@
 import { useAppIntl } from '@/locales';
-import type { RouteItem } from '@/router';
+import type { RouteItem as _RouteItem } from '@/router';
 import { matchKeyRoutes } from '@/router/utils';
 import { rootActions, useAppDispatch, useAppState } from '@/store';
+import type { SystemState } from '@/store/types/system';
 import type { UserState } from '@/store/types/user';
 import { Drawer, Layout, Menu } from 'antd';
+import _ from 'lodash';
 import React from 'react';
 import './index.less';
 
@@ -12,20 +14,20 @@ const { Sider } = Layout;
 
 interface LayoutMenu {}
 
+type RouteInfo = _RouteItem & SystemState['activeTag'];
 const LayoutMenu: React.FC<LayoutMenu> = () => {
-  const { isMenuCollapsed, isMobile, activeTagId } = useAppState(state => state.system);
+  const { isMenuCollapsed, isMobile, activeTag } = useAppState(state => state.system);
   const { menuList } = useAppState(state => state.user);
   const { f } = useAppIntl();
   const storeDispatch = useAppDispatch();
 
-  const handleMenuClick = (routeInfo: RouteItem) => {
+  const handleMenuClick = (routeInfo: RouteInfo) => {
     const isJump = routeInfo.element;
 
     if (isJump) {
-      const { setActiveTagId, addActiveTagId } = rootActions.system;
+      const { switchOrAddActiveTag } = rootActions.system;
 
-      storeDispatch(addActiveTagId(routeInfo.access!));
-      storeDispatch(setActiveTagId(routeInfo.access!));
+      storeDispatch(switchOrAddActiveTag(_.pick(routeInfo, ['access', 'titleId', 'path'])));
     }
   };
 
@@ -37,7 +39,7 @@ const LayoutMenu: React.FC<LayoutMenu> = () => {
 
   const renderTreeMenu = (menuList: UserState['menuList']): React.ReactNode =>
     menuList.map(menu => {
-      const routeInfo = matchKeyRoutes('access', menu.access);
+      const routeInfo = matchKeyRoutes('access', menu.access) as RouteInfo | undefined;
 
       if (!routeInfo) {
         throw new Error('菜单权限存在问题，menuList中存在routes未对应上的access值');
@@ -64,7 +66,7 @@ const LayoutMenu: React.FC<LayoutMenu> = () => {
     });
 
   const InsideComponent = (): JSX.Element => (
-    <Menu theme="light" selectedKeys={activeTagId ? [activeTagId] : []} mode="inline" className="app-menu">
+    <Menu theme="light" selectedKeys={activeTag?.access ? [activeTag.access] : []} mode="inline" className="app-menu">
       {renderTreeMenu(menuList)}
     </Menu>
   );
