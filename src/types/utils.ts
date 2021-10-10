@@ -1,6 +1,11 @@
 /**
  * @description 根据联合类型的长度 填充N个指定的子元素至数组
- * @see https://github.com/xlboy/learn-note/blob/main/ts/type-challenges/other.ts#L33
+ * @example
+ *
+ * type FormTypes = 'email' | 'phone';
+ * type FillContent = { test: number };
+ * type FormValues = InUnionFillArrayItem<FillContent, FormTypes>;
+ * // FormValues = [FillContent, FillContent]
  */
 export type InUnionFillArrayItem<FillItem, Union, FillArray extends FillItem[] = [], C extends Union = Union> = [
   C
@@ -12,7 +17,11 @@ export type InUnionFillArrayItem<FillItem, Union, FillArray extends FillItem[] =
 
 /**
  * @description 取字符串的长度
- * @see https://github.com/xlboy/learn-note/blob/main/ts/type-challenges/medium.ts#L337
+ * @example
+ *
+ * const onePieceStr = 'one-piece';
+ * type OnePieceStrLength = LengthOfString<typeof onePieceStr>;
+ * // OnePieceStrLength = 9
  */
 export type LengthOfString<
   StrSrouce extends string,
@@ -22,8 +31,12 @@ export type LengthOfString<
   : StrArray['length'];
 
 /**
- * 取模板字符串中指定的两个字符括住的内容，例取出 {与} 字符括住的内容： `Hello, {name}`，即name
- * @see https://github.com/xlboy/learn-note/blob/main/ts/type-challenges/other.ts#L88
+ * @description 取模板字符串中指定的两个字符括住的内容，例取出 {与} 字符括住的内容： `Hello, {name}`，即name
+ * @example
+ *
+ * type Str = `hello, my name is {name}, are you from {country}?`;
+ * type TestResult = GetStrTowCharRangeContent<Str, '{', '}'>;
+ * // TestResult = "name" | "country"
  */
 
 export type GetStrTowCharRangeContent<
@@ -46,7 +59,7 @@ export type GetStrTowCharRangeContent<
   : '第一个或第二个字符的长度不可超过1';
 
 /**
- * 取函数的所有参数，将返回数组类型
+ * @description 取函数的所有参数，将返回数组类型
  * @example
  *
  * const fn = (a: number, b: Record<string, number>) => {};
@@ -57,3 +70,10 @@ export type GetStrTowCharRangeContent<
  * // FnArgs[1] = Record<string, number>
  */
 export type GetFnArgs<Fn extends (...args: any[]) => any> = Fn extends (...args: infer Args) => any ? Args : never;
+
+/**
+ *
+ */
+export type PickRequired<T extends object, K extends keyof T> = T & {
+  [P in K]-?: T[P];
+};
