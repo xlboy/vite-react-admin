@@ -1,3 +1,4 @@
+import useStates from '@/hooks/useStates';
 import { useAppIntl } from '@/locales';
 import type { RouteItem as _RouteItem } from '@/router';
 import { matchKeyRoute, matchRouteKeyPaths } from '@/router/utils';
@@ -19,6 +20,9 @@ type RouteInfo = _RouteItem & SystemState['activeTag'];
 const LayoutMenu: React.FC<LayoutMenu> = () => {
   const { isMenuCollapsed, isMobile, activeTag } = useAppState(state => state.system);
   const { menuList } = useAppState(state => state.user);
+  const [{ openKeys }, setRootState] = useStates({
+    openKeys: [] as string[]
+  });
   const storeDispatch = useAppDispatch();
 
   const handleMenuClick = useCallback((routeInfo: RouteInfo) => {
@@ -27,7 +31,12 @@ const LayoutMenu: React.FC<LayoutMenu> = () => {
     if (isJump) {
       const { switchOrAddActiveTag } = rootActions.system;
 
-      storeDispatch(switchOrAddActiveTag(_.pick(routeInfo, ['key', 'titleId', 'path'])));
+      storeDispatch(
+        switchOrAddActiveTag({
+          ..._.pick(routeInfo, ['key', 'path']),
+          titleId: routeInfo.meta.titleId
+        })
+      );
     }
   }, []);
 
@@ -38,19 +47,35 @@ const LayoutMenu: React.FC<LayoutMenu> = () => {
   };
 
   const menuSelectedKeys: string[] = useMemo(() => {
-    const currentTagKey = activeTag?.key;
+    const currentActiveTagKey = activeTag?.key;
 
-    if (currentTagKey === undefined) return [];
+    if (currentActiveTagKey === undefined) return [];
 
-    const matchResult = matchRouteKeyPaths(currentTagKey);
+    const matchResult = matchRouteKeyPaths(currentActiveTagKey);
 
-    const selectdKeys = matchResult.map(item => item.key).filter(key => !!key);
+    const selectdKeys = matchResult.map(item => item.key).filter(key => !!key) as string[];
 
-    return selectdKeys as string[];
+    setRootState(state => ({
+      openKeys: [...new Set([...state.openKeys, ...selectdKeys.slice(0, selectdKeys.length - 1)])]
+    }));
+
+    return selectdKeys;
   }, [activeTag]);
 
+  const handleDropDownOpen = useCallback((keys: React.Key[]) => {
+    setRootState(state => ({
+      openKeys: [...new Set([...state.openKeys, ...(keys as string[])])]
+    }));
+  }, []);
+
   const renderMenu = (): JSX.Element => (
-    <InsideComponent menuList={menuList} menuSelectedKeys={menuSelectedKeys} handleMenuClick={handleMenuClick} />
+    <InsideComponent
+      menuList={menuList}
+      selectedKeys={menuSelectedKeys}
+      openKeys={openKeys}
+      handleMenuClick={handleMenuClick}
+      handleDropDownOpen={handleDropDownOpen}
+    />
   );
 
   return isMobile ? (
@@ -72,13 +97,15 @@ const LayoutMenu: React.FC<LayoutMenu> = () => {
 };
 
 interface InsideComponentProps {
-  menuSelectedKeys: string[];
+  selectedKeys: string[];
+  openKeys: string[];
   handleMenuClick(routeInfo: RouteInfo): void;
+  handleDropDownOpen(keys: React.Key[]): void;
   menuList: MenuItem[];
 }
 
 const InsideComponent: React.FC<InsideComponentProps> = memo(props => {
-  const { menuSelectedKeys, handleMenuClick, menuList } = props;
+  const { selectedKeys, openKeys, handleMenuClick, handleDropDownOpen, menuList } = props;
   const { f } = useAppIntl();
 
   const renderTreeMenu = (menuList: UserState['menuList']): React.ReactNode =>
@@ -89,7 +116,10 @@ const InsideComponent: React.FC<InsideComponentProps> = memo(props => {
         throw new Error('菜单权限存在问题，menuList中存在routes未对应上的key值');
       }
 
-      const { key, titleId, iconElement } = routeInfo;
+      const {
+        key,
+        meta: { iconElement, titleId }
+      } = routeInfo;
       const { children: menuChildren } = menu;
       const isExistChildren = menuChildren !== undefined && menuChildren.length !== 0;
 
@@ -112,10 +142,11 @@ const InsideComponent: React.FC<InsideComponentProps> = memo(props => {
   return (
     <Menu
       theme="light"
-      defaultOpenKeys={menuSelectedKeys}
-      selectedKeys={menuSelectedKeys}
+      openKeys={openKeys}
+      selectedKeys={selectedKeys}
       mode="inline"
       className="app-menu"
+      onOpenChange={handleDropDownOpen}
     >
       {renderTreeMenu(menuList)}
     </Menu>

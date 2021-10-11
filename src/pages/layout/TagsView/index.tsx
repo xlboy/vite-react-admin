@@ -1,6 +1,6 @@
 import { useAppIntl } from '@/locales';
 import { rootActions, useAppDispatch, useAppState } from '@/store';
-import { BorderOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { CloseCircleOutlined } from '@ant-design/icons';
 import { Dropdown, Menu, Tag } from 'antd';
 import './index.less';
 

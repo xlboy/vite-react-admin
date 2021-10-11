@@ -24,17 +24,17 @@ AxiosInstance.interceptors.response.use(
 
     switch (config.status) {
       case 401:
-        message.warn(f(401));
+        message.warn(f('401'));
         location.replace('/');
         break;
 
       case 403:
-        message.warn(f(403));
+        message.warn(f('403'));
         location.replace('/');
         break;
 
       case 404:
-        message.warn(f(404));
+        message.warn(f('404'));
         break;
     }
 

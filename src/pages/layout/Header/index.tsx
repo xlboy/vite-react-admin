@@ -28,8 +28,8 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = () => {
     const matchResult = matchCurrentPageRoutes();
 
     return (
-      matchResult?.map(({ pathname, route: { titleId } }) => ({
-        title: titleId ? f(titleId) : '',
+      matchResult?.map(({ pathname, route: { meta } }) => ({
+        title: meta?.titleId ? f(meta.titleId) : '',
         path: pathname
       })) ?? []
     );

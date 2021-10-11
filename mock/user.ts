@@ -36,7 +36,19 @@ export default [
             {
               id: 'permission_test_2',
               key: 'PERMISSION_TEST_2',
-              name: '测试2'
+              name: '测试2',
+              children: [
+                {
+                  id: 'permission_test_3',
+                  key: 'PERMISSION_TEST_3',
+                  name: '测试3'
+                },
+                {
+                  id: 'permission_test_4',
+                  key: 'PERMISSION_TEST_4',
+                  name: '测试4'
+                }
+              ]
             }
           ]
         }

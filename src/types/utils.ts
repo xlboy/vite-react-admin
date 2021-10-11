@@ -40,7 +40,7 @@ export type LengthOfString<
  */
 
 export type GetStrTowCharRangeContent<
-  Str extends string | number,
+  Str extends string,
   OneChar extends string,
   TowChar extends string,
   DefaultStr extends string = '',
@@ -89,9 +89,9 @@ export type GetFnArgs<Fn extends (...args: any[]) => any> = Fn extends (...args:
       name?: string;
     }
  */
-// export type PickRequired<T extends object, K extends keyof T> = T & {
-//   [P in K]-?: T[P];
-// };
+export type PickRequired<T extends object, K extends keyof T> = T & {
+  [P in K]-?: T[P];
+};
 
 // type Invalid<T> = Error & { __errorMessage: T };
 

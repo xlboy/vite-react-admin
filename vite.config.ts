@@ -17,8 +17,8 @@ export default defineConfig({
     // https://github.com/pd4d10/vite-plugin-svgr
     svgr(),
     // https://github.com/anncwb/vite-plugin-mock/blob/main/README.zh_CN.md
-    mock(),
-    babel()
+    mock()
+    // babel()
   ],
   resolve: {
     alias: [

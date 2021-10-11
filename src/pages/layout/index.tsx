@@ -33,9 +33,10 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
     const { switchOrAddActiveTag } = rootActions.system;
 
     storeDispatch(
-      switchOrAddActiveTag(
-        _.pick(matchResult?.route, ['key', 'titleId', 'path']) as Exclude<SystemState['activeTag'], null>
-      )
+      switchOrAddActiveTag({
+        ..._.pick(matchResult.route, ['key', 'path']),
+        titleId: matchResult.route.meta.titleId
+      } as Exclude<SystemState['activeTag'], null>)
     );
   };
 
@@ -61,11 +62,13 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
   }, []);
 
   useEffect(() => {
+    if (!isInitFinish.current) return;
     if (locationVal.pathname === '/') {
       navigate('dashboard');
-      updateCurrentPageTag();
     }
-  }, [locationVal]);
+
+    updateCurrentPageTag();
+  }, [locationVal.pathname, locationVal.hash]);
 
   useEffect(() => {
     if (cacheTags.length === 0 && isInitFinish.current) {
