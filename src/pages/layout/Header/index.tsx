@@ -33,7 +33,7 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = () => {
         path: pathname
       })) ?? []
     );
-  }, [locationVal, f]);
+  }, [locationVal]);
 
   const switchIsMenuCollapsed = () => {
     const { setIsMenuCollapsed } = rootActions.system;
