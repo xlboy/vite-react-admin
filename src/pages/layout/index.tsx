@@ -1,11 +1,11 @@
 import appConfig from '@/configs/app';
-import { matchCurrentPageRoute } from '@/router/utils';
-import { useAppDispatch } from '@/store';
+import { matchCurrentPageRoute, matchRouteKeyPaths } from '@/router/utils';
+import { useAppDispatch, useAppState } from '@/store';
 import { rootActions } from '@/store/';
 import type { SystemState } from '@/store/types/system';
 import { Layout } from 'antd';
 import _ from 'lodash';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import Header from './Header';
@@ -19,13 +19,16 @@ interface LayoutPageProps {}
 
 const LayoutPage: React.FC<LayoutPageProps> = () => {
   const storeDispatch = useAppDispatch();
+  const { cacheTags, activeTag } = useAppState(state => state.system);
   const locationVal = useLocation();
   const navigate = useNavigate();
+  const isInitFinish = useRef(false);
 
   const updateCurrentPageTag = () => {
     const matchResult = matchCurrentPageRoute();
 
-    console.log('matchResult', matchResult);
+    // 无key，证明是根目录，无需更新
+    if (!matchResult?.route.key) return;
 
     const { switchOrAddActiveTag } = rootActions.system;
 
@@ -52,14 +55,31 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
     window.onresize = handleMobileSize;
     handleMobileSize();
     updateCurrentPageTag();
+    // updateCurrentPageTag内dispatch执行后，未能将最新状态更新同步到其他地方，不得将isInitFinish值赋为true。
+    // 通过异步机制，确保最新状态更新同步到其他地方了再设为true
+    Promise.resolve().then(() => (isInitFinish.current = true));
   }, []);
 
   useEffect(() => {
+    console.log('locationVal', locationVal);
+
     if (locationVal.pathname === '/') {
       navigate('dashboard');
       updateCurrentPageTag();
     }
   }, [locationVal]);
+
+  useEffect(() => {
+    if (cacheTags.length === 0 && isInitFinish.current) {
+      navigate('dashboard');
+      updateCurrentPageTag();
+    } else if (activeTag) {
+      const matchResult = matchRouteKeyPaths(activeTag.key);
+      const tagPath = matchResult.map(item => item.path);
+
+      navigate(tagPath.join(''));
+    }
+  }, [cacheTags, activeTag]);
 
   return (
     <Layout className="app-layout">

@@ -39,9 +39,9 @@ export const matchCurrentPageRoute = (): CurrentRouteMath | null => {
 };
 
 /**
- * @description 根据某个key匹配出routes中的内容
+ * @description 根据指定的key匹配出route
  */
-export const matchKeyRoutes = (() => {
+export const matchKeyRoute = (() => {
   let flatRoutes: RouteItem[] | null = null;
 
   const handleFlatRoutes = (_routes: RouteItem[], _flatRoutes: RouteItem[] = []) => {
@@ -62,4 +62,36 @@ export const matchKeyRoutes = (() => {
   };
 
   return insideMatch;
+})();
+
+/**
+ * @description 根据指定的key匹配出树结构中相关的路径信息
+ */
+export const matchRouteKeyPaths = (() => {
+  let matchResult: RouteItem[] = [];
+
+  const insideMatch = (key: string, _routes = routes): boolean => {
+    return _routes.some((item, index) => {
+      if (item.key === key) {
+        matchResult.push(item);
+
+        return true;
+      } else if (item.children?.length) {
+        matchResult.push(item);
+
+        return insideMatch(key, item.children);
+      } else if (index === _routes.length - 1) {
+        matchResult.pop();
+      }
+
+      return false;
+    });
+  };
+
+  return (key: string): RouteItem[] => {
+    matchResult = [];
+    insideMatch(key, routes);
+
+    return matchResult;
+  };
 })();

@@ -58,6 +58,7 @@ const systemSlice = createSlice({
       const specifiedTag = action.payload;
 
       state.cacheTags = [specifiedTag];
+      state.activeTag = specifiedTag;
     },
     switchOrAddActiveTag(state, action: PayloadAction<NormalTag>) {
       const activeTag = action.payload;

@@ -17,6 +17,7 @@ export interface RouteItem extends PartialRouteObject {
   keepAlive?: boolean;
   titleId?: AppTitleLocaleId;
   children?: RouteItem[];
+  path: string;
 }
 
 /**

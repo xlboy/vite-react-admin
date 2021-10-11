@@ -23,7 +23,7 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
   }
 
   return isKeepAlive === true ? (
-    <KeepAlive key={key ?? ''}>
+    <KeepAlive key={key}>
       <WithRoute {...routeProps} />
     </KeepAlive>
   ) : (

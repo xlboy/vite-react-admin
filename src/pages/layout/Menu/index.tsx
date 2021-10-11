@@ -1,6 +1,6 @@
 import { useAppIntl } from '@/locales';
 import type { RouteItem as _RouteItem } from '@/router';
-import { matchKeyRoutes } from '@/router/utils';
+import { matchKeyRoute } from '@/router/utils';
 import { rootActions, useAppDispatch, useAppState } from '@/store';
 import type { SystemState } from '@/store/types/system';
 import type { UserState } from '@/store/types/user';
@@ -39,7 +39,7 @@ const LayoutMenu: React.FC<LayoutMenu> = () => {
 
   const renderTreeMenu = (menuList: UserState['menuList']): React.ReactNode =>
     menuList.map(menu => {
-      const routeInfo = matchKeyRoutes('key', menu.key) as RouteInfo | undefined;
+      const routeInfo = matchKeyRoute('key', menu.key) as RouteInfo | undefined;
 
       if (!routeInfo) {
         throw new Error('菜单权限存在问题，menuList中存在routes未对应上的key值');
