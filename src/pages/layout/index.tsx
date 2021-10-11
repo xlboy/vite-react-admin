@@ -61,8 +61,6 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
   }, []);
 
   useEffect(() => {
-    console.log('locationVal', locationVal);
-
     if (locationVal.pathname === '/') {
       navigate('dashboard');
       updateCurrentPageTag();
