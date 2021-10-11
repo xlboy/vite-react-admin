@@ -72,7 +72,22 @@ export type GetStrTowCharRangeContent<
 export type GetFnArgs<Fn extends (...args: any[]) => any> = Fn extends (...args: infer Args) => any ? Args : never;
 
 /**
+ * @description 选择性的将对象中某些key设为required
+ * @example
  *
+ * interface Userinfo {
+      id?: string;
+      key?: number;
+      age: number;
+      name?: string;
+   }
+ * type TestResult = PickRequired<Userinfo, 'id' | 'key'>;
+   TestResult = {
+      id: string;
+      key: number;
+      age: number;
+      name?: string;
+    }
  */
 export type PickRequired<T extends object, K extends keyof T> = T & {
   [P in K]-?: T[P];
