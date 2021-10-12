@@ -1,8 +1,7 @@
 import { ConfigProvider as AntdConfigProvider } from 'antd';
 import 'antd/dist/antd.less';
 import type { FC } from 'react';
-import { useEffect } from 'react';
-import { AliveScope } from 'react-activation';
+import { useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { IntlProvider } from 'react-intl';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -21,12 +20,12 @@ const App: FC = () => {
     storeDispatch(user.initUserInfo());
   }, []);
 
+  const initMessage = useMemo(() => getAppLocale(currentLocale), [currentLocale]);
+
   return (
     <AntdConfigProvider locale={getAntdLocale(currentLocale)} componentSize="middle">
-      <IntlProvider locale={currentLocale.split('_')[0]} messages={getAppLocale(currentLocale)}>
-        <AliveScope>
-          <Router />
-        </AliveScope>
+      <IntlProvider locale={currentLocale.split('_')[0]} messages={initMessage}>
+        <Router />
       </IntlProvider>
     </AntdConfigProvider>
   );

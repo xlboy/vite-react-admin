@@ -3,7 +3,7 @@ import { matchCurrentPageRoute, matchRouteKeyPaths } from '@/router/utils';
 import { useAppDispatch, useAppState } from '@/store';
 import { rootActions } from '@/store/';
 import type { SystemState } from '@/store/types/system';
-import { Layout } from 'antd';
+import { Drawer, Layout } from 'antd';
 import _ from 'lodash';
 import React, { useEffect, useRef } from 'react';
 import { Outlet, useNavigate } from 'react-router';
@@ -74,13 +74,17 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
     if (cacheTags.length === 0 && isInitFinish.current) {
       navigate('dashboard');
       updateCurrentPageTag();
-    } else if (activeTag) {
+    }
+  }, [cacheTags]);
+
+  useEffect(() => {
+    if (activeTag) {
       const matchResult = matchRouteKeyPaths(activeTag.key);
       const tagPath = matchResult.map(item => item.path);
 
       navigate(tagPath.join(''));
     }
-  }, [cacheTags, activeTag]);
+  }, [activeTag?.key]);
 
   return (
     <Layout className="app-layout">

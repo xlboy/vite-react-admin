@@ -20,7 +20,7 @@ const getPathname = () => {
  * @see https://github.com/remix-run/react-router/blob/dev/docs/api-reference.md#matchroutes
  */
 export const matchCurrentPageRoutes = (): CurrentRouteMath[] | null => {
-  return matchRoutes(routes as RouteObject[], getPathname());
+  return matchRoutes(routes as RouteObject[], getPathname()) as CurrentRouteMath[];
 };
 
 /**

@@ -2,6 +2,7 @@ import { useAppIntl } from '@/locales';
 import { rootActions, useAppDispatch, useAppState } from '@/store';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { Dropdown, Menu, Tag } from 'antd';
+import { memo } from 'react';
 import './index.less';
 
 interface LayoutTagsViewProps {}
@@ -79,4 +80,4 @@ const LayoutTagsView: React.FC<LayoutTagsViewProps> = props => {
   );
 };
 
-export default LayoutTagsView;
+export default memo(LayoutTagsView);

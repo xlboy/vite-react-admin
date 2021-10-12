@@ -4,7 +4,7 @@ import { matchCurrentPageRoutes } from '@/router/utils';
 import { useAppDispatch, useAppState } from '@/store';
 import { rootActions } from '@/store';
 import { Layout, message } from 'antd';
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { useLocation } from 'react-router';
 import { ReactComponent as IconAntd } from './assets/icon-antd.svg';
 import HeaderBreadcrumb from './components/Breadcrumb';
@@ -72,4 +72,4 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = () => {
   );
 };
 
-export default LayoutHeader;
+export default memo(LayoutHeader);
