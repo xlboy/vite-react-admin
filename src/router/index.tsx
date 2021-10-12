@@ -10,6 +10,7 @@ import { BarChartOutlined, LockOutlined } from '@ant-design/icons';
 import type { RouteObject } from 'react-router';
 import { BrowserRouter, HashRouter, useRoutes } from 'react-router-dom';
 import RouteWrapper from './RouteWrapper';
+import React from 'react';
 
 export interface RouteItem extends RouteObject {
   key?: string;
