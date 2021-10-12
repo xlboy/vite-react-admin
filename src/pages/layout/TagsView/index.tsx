@@ -31,13 +31,14 @@ const LayoutTagsView: React.FC<LayoutTagsViewProps> = props => {
     storeDispatch(removeExceptSpecifiedTag(tag));
   };
 
-  const handleTagRefresh = (tag: ActiveTag) => {};
+  // TODO: 留未来加入keep-alive后再跟进
+  // const handleTagRefresh = (tag: ActiveTag) => {};
 
   const RightClickTagMenu: React.FC<{ clickTag: ActiveTag }> = ({ clickTag }): JSX.Element => (
     <Menu className="app-tags-view-menu">
-      <Menu.Item key="1" onClick={handleTagRefresh.bind(null, clickTag)}>
+      {/* <Menu.Item key="1" onClick={handleTagRefresh.bind(null, clickTag)}>
         {f('刷新')}
-      </Menu.Item>
+      </Menu.Item> */}
       <Menu.Item key="2" onClick={handleTagClose.bind(null, clickTag)}>
         {f('关闭')}
       </Menu.Item>
@@ -62,7 +63,12 @@ const LayoutTagsView: React.FC<LayoutTagsViewProps> = props => {
         const isActiveTag = tag.key === activeTag?.key;
 
         return (
-          <Dropdown key={tag.key} overlay={<RightClickTagMenu clickTag={tag} />} trigger={['contextMenu']}>
+          <Dropdown
+            overlayClassName="app-tags-view-dropdown"
+            key={tag.key}
+            overlay={<RightClickTagMenu clickTag={tag} />}
+            trigger={['contextMenu']}
+          >
             <Tag
               className="tag-item"
               closable={isActiveTag}
