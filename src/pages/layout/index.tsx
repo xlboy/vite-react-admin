@@ -3,7 +3,7 @@ import { matchCurrentPageRoute, matchRouteKeyPaths } from '@/router/utils';
 import { useAppDispatch, useAppState } from '@/store';
 import { rootActions } from '@/store/';
 import type { SystemState } from '@/store/types/system';
-import { Layout } from 'antd';
+import { Layout, Spin } from 'antd';
 import _ from 'lodash';
 import React, { Suspense, useEffect, useRef } from 'react';
 import { Outlet, useNavigate } from 'react-router';
@@ -91,11 +91,19 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
       <Header />
       <Layout>
         <Menu />
-        <Content>
+        <Content className="app-layout-content">
           <TagsView />
-          <Suspense fallback={<div>等待</div>}>
-            <Outlet />
-          </Suspense>
+          <div className="app-layout-content-inside">
+            <Suspense
+              fallback={
+                <div className="app-loading">
+                  <Spin />
+                </div>
+              }
+            >
+              <Outlet />
+            </Suspense>
+          </div>
         </Content>
       </Layout>
     </Layout>
