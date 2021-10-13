@@ -1,6 +1,7 @@
 import { ConfigProvider as AntdConfigProvider } from 'antd';
 import 'antd/dist/antd.less';
 import type { FC } from 'react';
+import { Suspense } from 'react';
 import { useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { IntlProvider } from 'react-intl';
@@ -23,11 +24,13 @@ const App: FC = () => {
   const initMessage = useMemo(() => getAppLocale(currentLocale), [currentLocale]);
 
   return (
-    <AntdConfigProvider locale={getAntdLocale(currentLocale)} componentSize="middle">
-      <IntlProvider locale={currentLocale.split('_')[0]} messages={initMessage}>
-        <Router />
-      </IntlProvider>
-    </AntdConfigProvider>
+    <Suspense fallback={<>有一种悲伤，是你的名字停留贼的过往</>}>
+      <AntdConfigProvider locale={getAntdLocale(currentLocale)} componentSize="middle">
+        <IntlProvider locale={currentLocale.split('_')[0]} messages={initMessage}>
+          <Router />
+        </IntlProvider>
+      </AntdConfigProvider>
+    </Suspense>
   );
 };
 

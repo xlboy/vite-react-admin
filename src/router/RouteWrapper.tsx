@@ -1,14 +1,16 @@
 import { useAppIntl } from '@/locales';
+import type { ComponentType } from 'react';
 import type { RouteProps } from 'react-router';
 import AuthRoute from './RouteAuth';
 import { matchCurrentPageRoute } from './utils';
 
-interface RouteWrapperProps extends RouteProps {
+type RouteWrapperProps = Omit<RouteProps, 'element'> & {
   auth?: boolean;
-}
+  element: React.LazyExoticComponent<ComponentType<{}>>;
+};
 
 const RouteWrapper: React.FC<RouteWrapperProps> = props => {
-  const { auth, element } = props;
+  const { auth, element: ElementComponent } = props;
   const { f } = useAppIntl();
 
   const routeInfo = matchCurrentPageRoute();
@@ -20,7 +22,17 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
     document.title = f(routeTitleId!);
   }
 
-  return <>{auth ? <AuthRoute>{element}</AuthRoute> : element}</>;
+  return (
+    <>
+      {auth ? (
+        <AuthRoute>
+          <ElementComponent />
+        </AuthRoute>
+      ) : (
+        <ElementComponent />
+      )}
+    </>
+  );
 };
 
 export default RouteWrapper;

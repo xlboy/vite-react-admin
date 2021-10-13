@@ -3,7 +3,6 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import { viteMockServe as mock } from 'vite-plugin-mock';
 import svgr from 'vite-plugin-svgr';
-import { babel } from '@rollup/plugin-babel';
 
 const pathResolve = (dir: string) => resolve(__dirname, '.', dir);
 
@@ -18,7 +17,6 @@ export default defineConfig({
     svgr(),
     // https://github.com/anncwb/vite-plugin-mock/blob/main/README.zh_CN.md
     mock()
-    // babel()
   ],
   resolve: {
     alias: [

@@ -1,16 +1,10 @@
 import appConfig from '@/configs/app';
 import type { AppTitleLocaleId } from '@/locales/types';
-import NotFound from '@/pages/404';
-import DashboardPage from '@/pages/dashboard';
-import LayoutPage from '@/pages/layout';
-import LoginPage from '@/pages/login';
-import PermissionTest1 from '@/pages/permission/Test1';
-import PermissionTest2 from '@/pages/permission/Test2';
 import { BarChartOutlined, LockOutlined } from '@ant-design/icons';
+import React, { lazy } from 'react';
 import type { RouteObject } from 'react-router';
 import { BrowserRouter, HashRouter, useRoutes } from 'react-router-dom';
 import RouteWrapper from './RouteWrapper';
-import React from 'react';
 
 export interface RouteItem extends RouteObject {
   key?: string;
@@ -31,12 +25,12 @@ export const routes: RouteItem[] = [
     meta: {
       titleId: '登录'
     },
-    element: <RouteWrapper element={<LoginPage />} />,
+    element: <RouteWrapper element={lazy(() => import('@/pages/login'))} />,
     children: []
   },
   {
     path: '/',
-    element: <RouteWrapper element={<LayoutPage />} />,
+    element: <RouteWrapper element={lazy(() => import('@/pages/layout'))} />,
     meta: {},
     children: [
       {
@@ -47,7 +41,7 @@ export const routes: RouteItem[] = [
           iconElement: <BarChartOutlined />
         },
         key: 'DASHBOARD',
-        element: <RouteWrapper element={<DashboardPage />} />
+        element: <RouteWrapper element={lazy(() => import('@/pages/dashboard'))} />
       },
       {
         path: 'permission/',
@@ -60,7 +54,7 @@ export const routes: RouteItem[] = [
           {
             index: true,
             key: 'PERMISSION_TEST_1',
-            element: <RouteWrapper element={<PermissionTest1 />} />,
+            element: <RouteWrapper element={lazy(() => import('@/pages/permission/Test1'))} />,
             meta: {
               titleId: '测试1',
               keepAlive: true
@@ -81,7 +75,7 @@ export const routes: RouteItem[] = [
                   titleId: '测试3',
                   keepAlive: true
                 },
-                element: <RouteWrapper element={<PermissionTest2 />} />
+                element: <RouteWrapper element={lazy(() => import('@/pages/permission/Test2'))} />
               },
               {
                 path: 'test4',
@@ -90,7 +84,7 @@ export const routes: RouteItem[] = [
                   titleId: '测试4',
                   keepAlive: true
                 },
-                element: <RouteWrapper element={<PermissionTest2 />} />
+                element: <RouteWrapper element={lazy(() => import('@/pages/permission/Test2'))} />
               }
             ]
           }
@@ -101,7 +95,7 @@ export const routes: RouteItem[] = [
         meta: {
           titleId: '404 - 找不到页面'
         },
-        element: <RouteWrapper element={<NotFound />} />
+        element: <RouteWrapper element={lazy(() => import('@/pages/404'))} />
       }
     ]
   }

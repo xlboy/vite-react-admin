@@ -1,5 +1,7 @@
 import appConfig from '@/configs/app';
-import type { RouteObject, RouteMatch } from 'react-router';
+import type { ComponentType } from 'react';
+import { lazy } from 'react';
+import type { RouteMatch, RouteObject } from 'react-router';
 import { matchRoutes } from 'react-router';
 import type { RouteItem } from '.';
 import { routes } from '.';

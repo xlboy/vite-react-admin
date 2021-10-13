@@ -3,9 +3,9 @@ import { matchCurrentPageRoute, matchRouteKeyPaths } from '@/router/utils';
 import { useAppDispatch, useAppState } from '@/store';
 import { rootActions } from '@/store/';
 import type { SystemState } from '@/store/types/system';
-import { Drawer, Layout } from 'antd';
+import { Layout } from 'antd';
 import _ from 'lodash';
-import React, { useEffect, useRef } from 'react';
+import React, { Suspense, useEffect, useRef } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import Header from './Header';
@@ -93,7 +93,9 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
         <Menu />
         <Content>
           <TagsView />
-          <Outlet />
+          <Suspense fallback={<div>等待</div>}>
+            <Outlet />
+          </Suspense>
         </Content>
       </Layout>
     </Layout>
