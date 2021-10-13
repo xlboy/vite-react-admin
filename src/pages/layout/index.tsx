@@ -4,9 +4,9 @@ import { matchCurrentPageRoute, matchRouteKeyPaths } from '@/router/utils';
 import { useAppDispatch, useAppState } from '@/store';
 import { rootActions } from '@/store/';
 import type { SystemState } from '@/store/types/system';
-import { Layout, Spin } from 'antd';
+import { Layout } from 'antd';
 import _ from 'lodash';
-import React, { Suspense, useEffect, useRef } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import Header from './Header';
@@ -23,7 +23,6 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
   const { cacheTags, activeTag } = useAppState(state => state.system);
   const locationVal = useLocation();
   const navigate = useNavigate();
-  const isInitFinish = useRef(false);
 
   const updateCurrentPageTag = () => {
     const matchResult = matchCurrentPageRoute();
@@ -54,16 +53,16 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
       }
     };
 
+    if (locationVal.pathname === '/') {
+      navigate('dashboard');
+    }
+
     window.onresize = handleMobileSize;
     handleMobileSize();
     updateCurrentPageTag();
-    // updateCurrentPageTag内dispatch执行后，未能将最新状态更新同步到其他地方，不得将isInitFinish值赋为true。
-    // 通过异步机制，确保最新状态更新同步到其他地方了再设为true
-    Promise.resolve().then(() => (isInitFinish.current = true));
   }, []);
 
   useEffect(() => {
-    if (!isInitFinish.current) return;
     if (locationVal.pathname === '/') {
       navigate('dashboard');
     }
@@ -72,7 +71,7 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
   }, [locationVal.pathname, locationVal.hash]);
 
   useEffect(() => {
-    if (cacheTags.length === 0 && isInitFinish.current) {
+    if (cacheTags.length === 0) {
       navigate('dashboard');
       updateCurrentPageTag();
     }
