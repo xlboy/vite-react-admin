@@ -3,6 +3,7 @@ import { useAppIntl } from '@/locales';
 import { matchCurrentPageRoutes } from '@/router/utils';
 import { rootActions, useAppDispatch, useAppState } from '@/store';
 import { Layout, message } from 'antd';
+import classNames from 'classnames';
 import { memo, useMemo } from 'react';
 import { useLocation } from 'react-router';
 import AppSetting from './AppSetting';
@@ -53,7 +54,7 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = () => {
     <Header className="app-header">
       <div className="app-header-left-menu">
         {!isMobile && (
-          <div className="app-header-logo">
+          <div className={classNames('app-header-logo', { collapsed: isMenuCollapsed })}>
             <IconAntd className="icon" />
           </div>
         )}
