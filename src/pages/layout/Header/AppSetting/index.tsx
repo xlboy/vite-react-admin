@@ -3,15 +3,14 @@ import useStates from '@/hooks/useStates';
 import { useAppIntl } from '@/locales';
 import { rootActions, useAppDispatch, useAppState } from '@/store';
 import { SettingOutlined } from '@ant-design/icons';
-import { Button, Divider, Drawer } from 'antd';
-import { useCallback } from 'react';
-import { SketchPicker } from 'react-color';
+import { Button, Drawer } from 'antd';
+import { memo, useCallback } from 'react';
 import type { ThemeSetupProps } from './Theme';
 import ThemeSetup from './Theme';
 
 interface AppSettingProps {}
 
-const AppSetting: React.FC<AppSettingProps> = props => {
+const AppSetting: React.FC<AppSettingProps> = () => {
   const [{ isSettingVisible }, setRootState] = useStates({
     isSettingVisible: false
   });
@@ -27,7 +26,7 @@ const AppSetting: React.FC<AppSettingProps> = props => {
     setRootState({ isSettingVisible: false });
   };
 
-  const ThemeModule: React.FC = (() => {
+  const ThemeSetupModule: React.ReactNode = (() => {
     const { theme } = systemState;
     const handleThemeChange: ThemeSetupProps['handleThemeChange'] = useCallback(theme => {
       const { setTheme } = rootActions.system;
@@ -36,7 +35,7 @@ const AppSetting: React.FC<AppSettingProps> = props => {
       storeDispatch(setTheme(theme));
     }, []);
 
-    return () => <ThemeSetup theme={theme} handleThemeChange={handleThemeChange} />;
+    return <ThemeSetup handleThemeChange={handleThemeChange} theme={theme} />;
   })();
 
   return (
@@ -48,13 +47,14 @@ const AppSetting: React.FC<AppSettingProps> = props => {
         title={f('设置')}
         bodyStyle={{ padding: 20, height: '100%' }}
         closable={false}
+        destroyOnClose
         onClose={handleCloseSetting}
         visible={isSettingVisible}
       >
-        <ThemeModule />
+        {ThemeSetupModule}
       </Drawer>
     </>
   );
 };
 
-export default AppSetting;
+export default memo(AppSetting);

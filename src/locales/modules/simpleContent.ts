@@ -3,4 +3,14 @@
  * 索引 0 -> 简体中文， 1 -> 繁体， 2 -> 英文
  */
 
-export default {} as const;
+export default {
+  小: ['小', '小', 'Small'],
+  中: ['中', '中', 'Middle'],
+  大: ['大', '大', 'Big'],
+  刷新: ['刷新', '刷新', 'Refresh'],
+  关闭: ['关闭', '關閉', 'Close'],
+  登录: ['登录', '登錄', 'Login'],
+  设置: ['设置', '設置', 'Setting'],
+  确定: ['确定', '確定', 'Confirm'],
+  取消: ['取消', '取消', 'Cancel']
+} as const;
