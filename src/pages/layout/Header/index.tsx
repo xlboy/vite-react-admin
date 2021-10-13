@@ -1,11 +1,11 @@
 import appConfig from '@/configs/app';
 import { useAppIntl } from '@/locales';
 import { matchCurrentPageRoutes } from '@/router/utils';
-import { useAppDispatch, useAppState } from '@/store';
-import { rootActions } from '@/store';
+import { rootActions, useAppDispatch, useAppState } from '@/store';
 import { Layout, message } from 'antd';
 import { memo, useMemo } from 'react';
 import { useLocation } from 'react-router';
+import AppSetting from './AppSetting';
 import { ReactComponent as IconAntd } from './assets/icon-antd.svg';
 import HeaderBreadcrumb from './components/Breadcrumb';
 import MenuCollapsedIcon from './components/MenuCollapsedIcon';
@@ -67,6 +67,7 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = () => {
       <div className="app-header-right-menu">
         <SwitchLanguage switchCurrentLocale={switchCurrentLocale} currentLocale={currentLocale} />
         <UserMenu />
+        <AppSetting />
       </div>
     </Header>
   );

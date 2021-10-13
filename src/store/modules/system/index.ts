@@ -1,11 +1,12 @@
-import appConfig from '@/configs/app';
 import type { LocaleTypes } from '@/locales/types';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import type { SystemState } from '../types/system';
+import type { SystemState } from '../../types/system';
+import { initAppLocale, initAppTheme } from './utils';
 
 const initialState: SystemState = {
-  locale: (localStorage.getItem(appConfig.cacheKey.locale) ?? 'zh-CN') as LocaleTypes,
+  locale: initAppLocale(),
+  theme: initAppTheme(),
   cacheTags: [],
   activeTag: null,
   isMobile: false,
@@ -69,6 +70,11 @@ const systemSlice = createSlice({
       }
 
       state.activeTag = activeTag;
+    },
+    setTheme(state, action: PayloadAction<SystemState['theme']>) {
+      const theme = action.payload;
+
+      Object.assign(state.theme, theme);
     }
   }
 });

@@ -25,5 +25,7 @@ export default {
   刷新: ['刷新', '刷新', 'Refresh'],
   关闭: ['关闭', '關閉', 'Close'],
   关闭其他: ['关闭其他', '關閉其他', 'Close other'],
-  关闭所有: ['关闭所有', '關閉所有', 'Close all']
+  关闭所有: ['关闭所有', '關閉所有', 'Close all'],
+  设置: ['设置', '設置', 'Setting'],
+  主题色: ['主题色', '主題色', 'Theme color']
 } as const;

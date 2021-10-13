@@ -4,7 +4,8 @@ const appConfig = {
   routerMode: 'hash' as RouterTypes,
   mobileMaxWidth: 600,
   cacheKey: {
-    locale: 'select_locale'
+    locale: 'app_select_locale',
+    theme: 'app_theme'
   }
 } as const;
 
