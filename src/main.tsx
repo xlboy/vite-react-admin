@@ -1,18 +1,18 @@
-import { ConfigProvider as AntdConfigProvider } from 'antd';
-import 'antd/dist/antd.less';
+import { ConfigProvider as AntdConfigProvider, Spin } from 'antd';
+import 'antd/dist/antd.variable.less';
 import type { FC } from 'react';
-import { Suspense } from 'react';
-import { useEffect, useMemo } from 'react';
+import { Suspense, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { IntlProvider } from 'react-intl';
 import { Provider as ReduxProvider } from 'react-redux';
+import AppLoading from './components/App/Loading';
 import { getAntdLocale, getAppLocale } from './locales';
 import Router from './router';
 import store, { rootThunks, useAppDispatch, useAppState } from './store';
 import './styles/index.less';
 
 const App: FC = () => {
-  const { locale: currentLocale } = useAppState(state => state.system);
+  const { locale: currentLocale, theme: currentTheme } = useAppState(state => state.system);
   const storeDispatch = useAppDispatch();
 
   useEffect(() => {
@@ -21,16 +21,22 @@ const App: FC = () => {
     storeDispatch(user.initUserInfo());
   }, []);
 
+  useEffect(() => {
+    AntdConfigProvider.config({
+      theme: currentTheme
+    });
+  }, [currentTheme]);
+
   const initMessage = useMemo(() => getAppLocale(currentLocale), [currentLocale]);
 
   return (
-    <Suspense fallback={<>有一种悲伤，是你的名字停留贼的过往</>}>
-      <AntdConfigProvider locale={getAntdLocale(currentLocale)} componentSize="middle">
+    <AntdConfigProvider locale={getAntdLocale(currentLocale)} componentSize="middle">
+      <Suspense fallback={<AppLoading />}>
         <IntlProvider locale={currentLocale.split('_')[0]} messages={initMessage}>
           <Router />
         </IntlProvider>
-      </AntdConfigProvider>
-    </Suspense>
+      </Suspense>
+    </AntdConfigProvider>
   );
 };
 
