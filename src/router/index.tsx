@@ -1,6 +1,6 @@
 import appConfig from '@/configs/app';
 import type { AppTitleLocaleId } from '@/locales/types';
-import { BarChartOutlined, LockOutlined } from '@ant-design/icons';
+import { BarChartOutlined, LockOutlined, RocketOutlined } from '@ant-design/icons';
 import React, { lazy } from 'react';
 import type { RouteObject } from 'react-router';
 import { BrowserRouter, HashRouter, useRoutes } from 'react-router-dom';
@@ -34,7 +34,7 @@ export const routes: RouteItem[] = [
     meta: {},
     children: [
       {
-        path: 'dashboard',
+        path: '/dashboard',
         meta: {
           titleId: '首页',
           keepAlive: true,
@@ -44,7 +44,7 @@ export const routes: RouteItem[] = [
         element: <RouteWrapper element={lazy(() => import('@/pages/dashboard'))} />
       },
       {
-        path: 'permission/',
+        path: 'permission',
         key: 'PERMISSION',
         meta: {
           titleId: '权限测试',
@@ -61,7 +61,7 @@ export const routes: RouteItem[] = [
             }
           },
           {
-            path: 'test2/',
+            path: 'test2',
             key: 'PERMISSION_TEST_2',
             meta: {
               keepAlive: true,

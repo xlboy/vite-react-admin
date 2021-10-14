@@ -81,7 +81,15 @@ export const matchRouteKeyPaths = (() => {
       } else if (item.children?.length) {
         matchResult.push(item);
 
-        return insideMatch(key, item.children);
+        const childMatchResult = insideMatch(key, item.children);
+
+        if (!childMatchResult) {
+          matchResult.pop();
+
+          return false;
+        }
+
+        return true;
       } else if (index === _routes.length - 1) {
         matchResult.pop();
       }

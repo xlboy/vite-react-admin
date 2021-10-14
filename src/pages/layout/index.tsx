@@ -61,6 +61,7 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
     window.onresize = handleMobileSize;
     handleMobileSize();
     updateCurrentPageTag();
+    // 为使组件首次挂载完成前不进行 cacheTags、activeTag 相关的 Effect 初始化
     Promise.resolve().then(() => (isInitFinish.current = true));
   }, []);
 
@@ -84,9 +85,12 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
     if (!isInitFinish.current) return;
     if (activeTag) {
       const matchResult = matchRouteKeyPaths(activeTag.key);
-      const tagPath = matchResult.map(item => item.path);
+      const filterTagPath = matchResult
+        .map(item => item.path)
+        .join('/')
+        .replace(/\/{2,}/g, '/');
 
-      navigate(tagPath.join(''));
+      navigate(filterTagPath);
     }
   }, [activeTag?.key]);
 
