@@ -1,3 +1,4 @@
+import AppErrorBoundary from '@/components/App/ErrorBoundary';
 import AppLoading from '@/components/App/Loading';
 import appConfig from '@/configs/app';
 import { matchCurrentPageRoute, matchRouteKeyPaths } from '@/router/utils';
@@ -102,9 +103,11 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
         <Content className="app-layout-content">
           <TagsView />
           <div className="app-layout-content-inside">
-            <Suspense fallback={<AppLoading />}>
-              <Outlet />
-            </Suspense>
+            <AppErrorBoundary>
+              <Suspense fallback={<AppLoading />}>
+                <Outlet />
+              </Suspense>
+            </AppErrorBoundary>
           </div>
         </Content>
       </Layout>

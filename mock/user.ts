@@ -51,6 +51,11 @@ export default [
               ]
             }
           ]
+        },
+        {
+          id: 'errorHandle',
+          key: 'ERROR_HANDLE',
+          name: '异常处理'
         }
       ] as MenuItem[]
     }

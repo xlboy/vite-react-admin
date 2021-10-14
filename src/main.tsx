@@ -1,10 +1,11 @@
-import { ConfigProvider as AntdConfigProvider, Spin } from 'antd';
+import { ConfigProvider as AntdConfigProvider } from 'antd';
 import 'antd/dist/antd.variable.less';
 import type { FC } from 'react';
 import { Suspense, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { IntlProvider } from 'react-intl';
 import { Provider as ReduxProvider } from 'react-redux';
+import AppErrorBoundary from './components/App/ErrorBoundary';
 import AppLoading from './components/App/Loading';
 import { getAntdLocale, getAppLocale } from './locales';
 import Router from './router';
@@ -30,13 +31,15 @@ const App: FC = () => {
   const initMessage = useMemo(() => getAppLocale(currentLocale), [currentLocale]);
 
   return (
-    <AntdConfigProvider locale={getAntdLocale(currentLocale)} componentSize="middle">
-      <Suspense fallback={<AppLoading />}>
-        <IntlProvider locale={currentLocale.split('_')[0]} messages={initMessage}>
-          <Router />
-        </IntlProvider>
-      </Suspense>
-    </AntdConfigProvider>
+    <IntlProvider locale={currentLocale.split('_')[0]} messages={initMessage}>
+      <AppErrorBoundary>
+        <Suspense fallback={<AppLoading />}>
+          <AntdConfigProvider locale={getAntdLocale(currentLocale)} componentSize="middle">
+            <Router />
+          </AntdConfigProvider>
+        </Suspense>
+      </AppErrorBoundary>
+    </IntlProvider>
   );
 };
 

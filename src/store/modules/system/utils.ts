@@ -10,7 +10,6 @@ export const initAppTheme = (): SystemState['theme'] => {
     try {
       return JSON.parse(cacheTheme) as SystemState['theme'];
     } catch (error) {
-      console.error('主题异常');
       message.error('Theme Error');
     }
   }

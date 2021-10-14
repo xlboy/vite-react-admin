@@ -93,6 +93,13 @@ export type PickRequired<T extends object, K extends keyof T> = T & {
   [P in K]-?: T[P];
 };
 
+/**
+ * @description 获取组件Props类型
+ */
+export type GetComponentPropsType<Fn extends (...args: any[]) => any> = Fn extends (...args: infer Args) => any
+  ? Args[0]
+  : never;
+
 // type Invalid<T> = Error & { __errorMessage: T };
 
 // type AsUniqueArray<A extends ReadonlyArray<any>, B extends ReadonlyArray<any>> = {

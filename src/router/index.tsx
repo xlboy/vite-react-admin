@@ -91,6 +91,15 @@ export const routes: RouteItem[] = [
         ]
       },
       {
+        path: 'error-handle',
+        meta: {
+          iconElement: <RocketOutlined />,
+          titleId: '异常处理'
+        },
+        key: 'ERROR_HANDLE',
+        element: <RouteWrapper element={lazy(() => import('@/pages/ErrorHandle'))} />
+      },
+      {
         path: '*',
         meta: {
           titleId: '404 - 找不到页面'
