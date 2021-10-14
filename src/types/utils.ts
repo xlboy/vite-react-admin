@@ -24,9 +24,9 @@ export type InUnionFillArrayItem<FillItem, Union, FillArray extends FillItem[] =
  * // OnePieceStrLength = 9
  */
 export type LengthOfString<
-  StrSrouce extends string,
+  StrSource extends string,
   StrArray extends string[] = []
-> = StrSrouce extends `${infer StartChar}${infer RestChar}`
+> = StrSource extends `${infer StartChar}${infer RestChar}`
   ? LengthOfString<RestChar, [...StrArray, StartChar]>
   : StrArray['length'];
 
