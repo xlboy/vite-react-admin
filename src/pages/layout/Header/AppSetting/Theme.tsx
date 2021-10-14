@@ -2,7 +2,7 @@ import useStates from '@/hooks/useStates';
 import { useAppIntl } from '@/locales';
 import type { SystemState } from '@/store/types/system';
 import { Badge, Button, Popover } from 'antd';
-import React from 'react';
+import React, { memo } from 'react';
 import type { ColorResult } from 'react-color';
 import { SketchPicker } from 'react-color';
 
@@ -65,4 +65,4 @@ const ThemeSetup: React.FC<ThemeSetupProps> = props => {
   );
 };
 
-export default ThemeSetup;
+export default memo(ThemeSetup);

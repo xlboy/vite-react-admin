@@ -6,7 +6,7 @@ import { rootActions } from '@/store/';
 import type { SystemState } from '@/store/types/system';
 import { Layout } from 'antd';
 import _ from 'lodash';
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect, useRef } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import Header from './Header';
@@ -23,6 +23,7 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
   const { cacheTags, activeTag } = useAppState(state => state.system);
   const locationVal = useLocation();
   const navigate = useNavigate();
+  const isInitFinish = useRef(false);
 
   const updateCurrentPageTag = () => {
     const matchResult = matchCurrentPageRoute();
@@ -60,6 +61,7 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
     window.onresize = handleMobileSize;
     handleMobileSize();
     updateCurrentPageTag();
+    Promise.resolve().then(() => (isInitFinish.current = true));
   }, []);
 
   useEffect(() => {
@@ -71,6 +73,7 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
   }, [locationVal.pathname, locationVal.hash]);
 
   useEffect(() => {
+    if (!isInitFinish.current) return;
     if (cacheTags.length === 0) {
       navigate('dashboard');
       updateCurrentPageTag();
@@ -78,6 +81,7 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
   }, [cacheTags]);
 
   useEffect(() => {
+    if (!isInitFinish.current) return;
     if (activeTag) {
       const matchResult = matchRouteKeyPaths(activeTag.key);
       const tagPath = matchResult.map(item => item.path);
