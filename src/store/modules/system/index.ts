@@ -52,6 +52,9 @@ const systemSlice = createSlice({
         } else if (isLastOne) {
           // 以此类推，删的是最后一个，切换至最后一位
           state.activeTag = state.cacheTags.at(-1)!;
+        } else {
+          // 删的是中间区域的，切换至下一位
+          state.activeTag = state.cacheTags[currentActiveTagIndex];
         }
       }
     },
