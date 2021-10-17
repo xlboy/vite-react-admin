@@ -30,7 +30,7 @@ export const routes: RouteItem[] = [
   },
   {
     path: '/',
-    element: <RouteWrapper element={lazy(() => import('@/pages/layout'))} />,
+    element: <RouteWrapper element={lazy(() => import('@/layout'))} />,
     meta: {},
     children: [
       {
