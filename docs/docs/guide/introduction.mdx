@@ -1,0 +1,92 @@
+---
+title: 快速上手
+sidebar_position: 1
+---
+
+### 简介
+
+本模板基于 [`Vite`](https://vitejs.dev/)、[`TypeScript`](https://www.typescriptlang.org/)、[`React`](https://zh-hans.reactjs.org/)、[`AntD`](https://ant.design/index-cn) 进行搭建，它拥有极致的 _TS_ 开发体验与内置有多种[特性](#特性)，相信能让你轻松上手使用或成为你学习参考的资料之一。
+
+### 特性
+
+```shell
+- 登录 / 注销
+
+- 权限验证
+  - 页面权限
+  - 路由权限
+
+- 全局功能
+  - 动态侧边栏 (支持多级路由嵌套与自适应收缩)
+  - 动态面包屑
+  - 动态标签栏
+  - 动态标题
+  - 动态主题
+  - 国际化
+  - 本地 mock 数据
+
+- 错误页面
+  - 403
+  - 404
+  - 全局与局部的错误边界反馈
+
+```
+
+### 前序准备
+
+#### 环境
+
+- [`Node.js`](http://nodejs.cn/) >= `14.12.0` 版本
+- [`yarn`](https://yarnpkg.com/) ~= `1.22.15` 版本
+
+#### 基础知识
+
+- 熟悉 [`React`](https://zh-hans.reactjs.org/) 与 [`Hooks`](https://zh-hans.reactjs.org/docs/hooks-intro.html) 的使用
+- 熟悉 [`TypeScript`](https://www.typescriptlang.org/) 基本语法
+- 对 [`Vite`](https://vitejs.dev/) 有一定的了解
+
+### 目录结构
+
+```sh
+├── .vscode                 # VSCode 的统一配置
+├── mock                    # 模拟接口数据
+├── src
+│   ├── assets              # 字体、图片等需要特殊处理的静态资源
+│   ├── locales             # 国际化
+│   ├── router              # 路由
+│   ├── store               # 全局状态管理
+│   ├── services            # 接口请求层
+│   ├── styles              # 全局样式
+│   ├── configs             # 全局配置
+│   ├── hooks               # 公共钩子
+│   ├── utils               # 公用方法
+│   ├── components          # 公共组件
+│   ├── main.ts             # 应用入口文件
+│   └── pages               # 各页面
+├── public                  # 存放静态资源的地方，详阅 (https://cn.vitejs.dev/guide/assets.html#the-public-directory)
+├── .eslintignore           # 告知 eslint 不用校验的文件
+├── .eslintrc               # eslint 配置
+├── .prettierrc             # prettier 配置
+├── .gitignore              # 告知 git 不用捕获的文件
+├── .yarnrc                 # yarn 配置
+├── vite.config.ts          # vite 配置
+├── tsconfig.json           # typescritp 配置
+└── package.json            # 项目重要信息的描述
+```
+
+### 安装运行
+通过如上的介绍，相信你已经对它有了一定的了解，是时候安装依赖运行服务看看模样了。
+
+```sh
+# 克隆
+git clone https://github.com/xlboy/vite-react-admin.git
+
+# 进入项目目录
+cd vite-react-admin
+
+# 使用 yarn 安装依赖 (项目中已配置 yarn 淘宝镜像)
+yarn install
+
+# 启动服务
+yarn dev
+```

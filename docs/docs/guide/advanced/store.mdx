@@ -1,0 +1,100 @@
+---
+title: 状态管理 (store)
+---
+
+状态管理为 redux 系列，而原生 redux 较为繁琐，特此采用 [`redux-toolkit`](https://redux-toolkit.js.org/)
+
+### index.ts 出口
+
+_index.ts_ 里主要是对 _store_ 的 _出口_ 进行控制，而有哪些内容要从 _store_ 这个出口 _出去_ 的呢？
+
+比如相关的核心方法，`useAppState` 、`useAppDispatch` 、`getAppState`
+
+以及各模块的 `Action` 与 `Thunk` 集合。
+
+```tsx title="主出口于 /src/store/index.ts 中"
+import { configureStore } from '@reduxjs/toolkit';
+import { useDispatch, useSelector } from 'react-redux';
+import rootReducers from './rootReducers';
+
+const store = configureStore({
+  reducer: rootReducers
+});
+
+export { default as rootActions } from './rootActions';
+
+export { default as rootThunks } from './rootThunks';
+
+type AppState = ReturnType<typeof rootReducers>;
+type AppDispatch = typeof store.dispatch;
+
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+
+export const useAppState = <T extends (state: AppState) => any>(selector: T): ReturnType<T> => useSelector(selector);
+
+export const getAppState = (): AppState => store.getState();
+
+export default store;
+```
+
+### useAppState
+
+`useAppState` 是个用来消费状态数据的钩子，内部是基于 `useSelector` 进行了二次封装，而封装的缘由则是为了让使用时能享受到极佳的TS体验，以及将其重命名为通俗易懂的名称，更清晰明了。
+
+```tsx title="使用示例"
+import { useAppState } from '@/store';
+
+interface RouteAuthProps {}
+
+const RouteAuth: React.FC<RouteAuthProps> = () => {
+  const { menuList } = useAppState(state => state.user);
+
+  return <div>{menuList}</div>;
+};
+```
+
+### getAppState
+
+`getAppState` 主要用处与 `useAppState` 一样，用作消费状态数据。但它并非钩子，可以用其在非组件的环境下消费状态数据。
+
+### useAppDispatch
+
+`useAppDispatch` 是个用来调起 Action 而触发状态数据更新的钩子，内部是基于 `useDispatch` 进行了二次封装，而封装的缘由则是保持与 `useAppState` 统一化🤓
+
+### rootActions
+
+> 具体代码请阅 /src/store/rootActions.ts
+
+`rootActions` 是所有状态模块的 `Action` 集合。它的数据类型是 `Record<状态模块名, 对应的Action对象>`。
+
+为什么要做一层 `rootActions` 收集呢？是因为它能全局控制好各状态模块的 `Action`，什么时候该放出来，什么时候不该放出来等等。
+
+以及在使用时可统一通过 `rootActions` 来拿到各状态模块内的 `Action` ，尽可能的提高代码的内聚力
+
+```tsx title="与 useAppDispatch 一起使用的示例"
+import { rootActions, useAppDispatch } from '@/store';
+
+interface LayoutHeaderProps {}
+
+const LayoutHeader: React.FC<LayoutHeaderProps> = () => {
+  const storeDispatch = useAppDispatch();
+
+  const switchIsMenuCollapsed = () => {
+    const { setIsMenuCollapsed } = rootActions.system;
+
+    storeDispatch(setIsMenuCollapsed());
+  };
+
+  return (
+    <div>
+      <button onClick={switchIsMenuCollapsed}>切换菜单收缩状态</button>
+    </div>
+  );
+};
+```
+
+### rootThunks
+
+`rootThunks` 是所有状态模块的 `Thunk` 集合。它的数据类型是 `Record<状态模块名, 对应的Thunk对象>`。
+
+`Thunk` 的意义则如 `redux-thunk` 一般。
