@@ -4,7 +4,7 @@ import { createIntl } from '@formatjs/intl';
 import type { Locale as AntdLocale } from 'antd/lib/locale-provider';
 import type { IntlShape, MessageDescriptor } from 'react-intl';
 import { useIntl } from 'react-intl';
-import { rootAntdLocale, rootAppLocale } from './rootLocale';
+import { rootAntdLocale, rootAppLocale } from './rootLocales';
 import type { AppLocaleId, LocaleTypes } from './types';
 
 export const getAntdLocale = (type: LocaleTypes) => rootAntdLocale[type] as unknown as AntdLocale;

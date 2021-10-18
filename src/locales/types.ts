@@ -1,4 +1,4 @@
-import type { rootAppLocale } from './rootLocale';
+import type { rootAppLocale } from './rootLocales';
 import type titleLocale from './modules/title';
 
 /**
