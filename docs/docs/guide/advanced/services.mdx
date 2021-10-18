@@ -12,7 +12,7 @@ title: 请求层 (services)
 
 ## 接口模块
 
-> 接口模块统一以 [`interface`](#interface-接口层)、[`service`](#service-实现层)、`type` 这三层进行规范开发。
+> 接口模块统一以 [`interface`](#interface-接口层)、[`service`](#service-实现层)、[`type`](#type-类型层) 这三层进行开发。
 
 例如 user 接口模块：
 
@@ -27,22 +27,19 @@ servicers
 
 ### interface 接口层
 
-> 主要用于定义此模块拥有哪些接口，以及这些接口的请求类型、返回类型和注释。
+> 主要用于定义此模块拥有哪些接口，以及这些接口调用时的参数类型、返回类型和注释。
 
 例：
 
 ```ts
-import type { APIRespNormalFormat } from "@/services/types";
-import type { MenuItem } from "@/store/types/user";
+import type { APIRespNormalFormat } from '@/services/types';
+import type { MenuItem } from '@/store/types/user';
 
 export default interface UserInterface {
   /**
    * @description 用户登录 - GET
    */
-  login(data: {
-    username: string;
-    password: string;
-  }): APIRespNormalFormat<boolean>;
+  login(data: { username: string; password: string }): APIRespNormalFormat<boolean>;
 
   /**
    * @description 获取用户菜单 - GET
@@ -53,39 +50,39 @@ export default interface UserInterface {
 
 你可能疑惑为什么要大费周章起一个 `interface` 层。
 
-实际上是可以通过它与 [`service`](#service-实现层) 实现层配合打出一套开发体验不错的组合拳。
+因为可以通过它与 [`service`](#service-实现层) 实现层配合打出一套开发体验不错的组合拳。
 
 具体体验不错在哪，在接下来的介绍会为你揭晓。
 
 ### service 实现层
 
-> 主要用于实现 [`interface`](#interface-接口层) 中定义的各接口。
+> 主要用于实现 [`interface`](#interface-接口层) 中定义的各接口。另外，实现的途中也可对请求回来的接口数据进行独特处理 (例: 过滤、转换)。最后再交给渲染层一个心满意足的干净答案。
 
 例：
 
 ```ts
-import BaseService from "../base.service";
-import type UserInterface from "./user.interface";
+import BaseService from '../base.service';
+import type UserInterface from './user.interface';
 
-const serviceModuleName = "/user";
+const serviceModuleName = '/user';
 
 class UserService extends BaseService implements UserInterface {
   constructor() {
     super(serviceModuleName);
   }
 
-  getMenuList: UserInterface["getMenuList"] = () =>
+  getMenuList: UserInterface['getMenuList'] = () =>
     this.request({
-      baseURL: "/mock",
-      method: "GET",
-      url: "/menu",
+      baseURL: '/mock',
+      method: 'GET',
+      url: '/menu'
     });
 
-  login: UserInterface["login"] = (params) =>
+  login: UserInterface['login'] = params =>
     this.request({
-      method: "GET",
-      url: "/login",
-      params,
+      method: 'GET',
+      url: '/login',
+      params
     });
 }
 
@@ -100,7 +97,7 @@ export default new UserService();
 
 言归正传，着眼望回 `UserService` 内部，它还另外通过 TS 的 `implements` 关键字实现了 `UserInterface` 接口。
 
-而这种实现接口的方式，可以让我们在未来需要维护或审查某个接口模块时，能直接通过接口层里的类型定义、注释等快速了解完此接口模块的大概重要信息。
+而这种实现接口的方式，可以让我们在未来需要<u>**维护或审查**</u>某个接口模块时，能直接<u>**通过接口层里的类型定义、注释等快速了解完此接口模块的大概重要信息**</u>。
 
 而此时，你可能会觉得接口层的确是能看清大概的重要信息了，可如果想更彻底的看具体的核心请求代码，又得手动点开实现层，这点来点去的，嫌手累？
 
@@ -110,9 +107,12 @@ export default new UserService();
 
 ![接口实现跳转](./接口实现跳转.gif)
 
-在调用 `UserService` 某个请求的地方，也能享受到 `interface` 带来的注释、类型定义。
+另外，在调用 `UserService` 接口的地方，也能享受到 `interface` 带来的注释、类型定义。
 
 如图：
 
 ![调用处](./调用处.jpeg)
 
+### type 类型层
+
+> 主要用于存放与接口模块相关的类型定义
