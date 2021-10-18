@@ -39,7 +39,7 @@ export default store;
 
 ### useAppState
 
-`useAppState` 是个用来消费状态数据的钩子，内部是基于 `useSelector` 进行了二次封装，而封装的缘由则是为了让使用时能享受到极佳的TS体验，以及将其重命名为通俗易懂的名称，更清晰明了。
+`useAppState` 是个用来消费状态数据的钩子，内部是基于 `useSelector` 进行了二次封装，而封装的缘由则是为了提升开发时的 TS 体验，以及将其重命名为通俗易懂的名称，更清晰明了。
 
 ```tsx title="使用示例"
 import { useAppState } from '@/store';
@@ -59,7 +59,7 @@ const RouteAuth: React.FC<RouteAuthProps> = () => {
 
 ### useAppDispatch
 
-`useAppDispatch` 是个用来调起 Action 而触发状态数据更新的钩子，内部是基于 `useDispatch` 进行了二次封装，而封装的缘由则是保持与 `useAppState` 统一化🤓
+`useAppDispatch` 是个用来调起 Action 而触发状态数据更新的钩子，内部是基于 `useDispatch` 进行了二次封装，而封装的缘由则是保持与 `useAppState` 统一化 🤓
 
 ### rootActions
 
