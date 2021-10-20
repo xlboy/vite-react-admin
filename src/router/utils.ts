@@ -1,10 +1,8 @@
 import appConfig from '@/configs/app';
-import type { ComponentType } from 'react';
-import { lazy } from 'react';
 import type { RouteMatch, RouteObject } from 'react-router';
 import { matchRoutes } from 'react-router';
-import type { RouteItem } from '.';
-import { routes } from '.';
+import type { RouteItem } from './routes';
+import routes from './routes';
 
 interface CurrentRouteMath extends RouteMatch {
   route: RouteMatch['route'] & RouteItem;
@@ -18,7 +16,7 @@ const getPathname = () => {
 };
 
 /**
- * @description 匹配当前路由的层级信息
+ * @description 匹配当前页面的route路径信息
  * @see https://github.com/remix-run/react-router/blob/dev/docs/api-reference.md#matchroutes
  */
 export const matchCurrentPageRoutes = (): CurrentRouteMath[] | null => {
@@ -26,7 +24,7 @@ export const matchCurrentPageRoutes = (): CurrentRouteMath[] | null => {
 };
 
 /**
- * @description 匹配当前路由的信息
+ * @description 匹配当前页面的route
  * @see https://github.com/remix-run/react-router/blob/dev/docs/api-reference.md#matchroutes
  */
 export const matchCurrentPageRoute = (): CurrentRouteMath | null => {
@@ -41,7 +39,7 @@ export const matchCurrentPageRoute = (): CurrentRouteMath | null => {
 };
 
 /**
- * @description 根据指定的key匹配出route
+ * @description 根据指定的字段在router树中匹配出对应的route
  */
 export const matchKeyRoute = (() => {
   let flatRoutes: RouteItem[] | null = null;
@@ -57,7 +55,7 @@ export const matchKeyRoute = (() => {
     return _flatRoutes;
   };
 
-  const insideMatch = <K extends keyof RouteItem>(key: K, value: RouteItem[K]) => {
+  const insideMatch = <K extends keyof RouteItem>(key: K, value: RouteItem[K]): RouteItem | undefined => {
     flatRoutes ??= handleFlatRoutes(routes);
 
     return flatRoutes?.find(item => item[key] === value);
@@ -67,7 +65,7 @@ export const matchKeyRoute = (() => {
 })();
 
 /**
- * @description 根据指定的key匹配出树结构中相关的路径信息
+ * @description 根据指定的key值在router树中匹配出相关的route路径信息
  */
 export const matchRouteKeyPaths = (() => {
   let matchResult: RouteItem[] = [];

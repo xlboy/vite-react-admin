@@ -1,13 +1,12 @@
 import useStates from '@/hooks/useStates';
 import { useAppIntl } from '@/locales';
-import type { RouteItem as _RouteItem } from '@/router';
+import type { RouteItem as _RouteItem } from '@/router/routes';
 import { matchKeyRoute, matchRouteKeyPaths } from '@/router/utils';
 import { rootActions, useAppDispatch, useAppState } from '@/store';
 import type { SystemState } from '@/store/types/system';
 import type { UserState } from '@/store/types/user';
 import { Drawer, Layout, Menu } from 'antd';
-import _ from 'lodash';
-import React, { memo, useCallback, useEffect, useMemo } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import './index.less';
 
 const { SubMenu } = Menu;
@@ -99,12 +98,7 @@ const LayoutMenu: React.FC<LayoutMenu> = () => {
     if (isJump) {
       const { switchOrAddActiveTag } = rootActions.system;
 
-      storeDispatch(
-        switchOrAddActiveTag({
-          ..._.pick(routeInfo, ['key', 'path']),
-          titleId: routeInfo.meta.titleId
-        })
-      );
+      storeDispatch(switchOrAddActiveTag(routeInfo.key));
     }
   }, []);
 

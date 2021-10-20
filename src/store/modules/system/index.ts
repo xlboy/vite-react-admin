@@ -1,8 +1,11 @@
 import type { LocaleTypes } from '@/locales/types';
+import type { RouteItem } from '@/router/routes';
+import { matchKeyRoute } from '@/router/utils';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import type { SystemState } from '../../types/system';
 import { initAppLocale, initAppTheme } from './utils';
+import _ from 'lodash';
 
 const initialState: SystemState = {
   locale: initAppLocale(),
@@ -44,7 +47,7 @@ const systemSlice = createSlice({
 
       state.cacheTags.splice(specifiedTagIndex, 1);
 
-      // 判断删除的tag是否会影响活跃的tag，若影响则将 活跃tag 换位
+      // 判断删除的tag是否为活跃的tag，如若是，则将 活跃tag 换位
       if (state.cacheTags.length !== 0 && currentActiveTagIndex === specifiedTagIndex) {
         // 刚好要删除的是第一个，则将tag切换到最新一位
         if (isFirstOne) {
@@ -64,15 +67,27 @@ const systemSlice = createSlice({
       state.cacheTags = [specifiedTag];
       state.activeTag = specifiedTag;
     },
-    switchOrAddActiveTag(state, action: PayloadAction<NormalTag>) {
-      const activeTag = action.payload;
-      const isExistTag = Boolean(state.cacheTags.find(item => item.key === activeTag.key));
+    switchOrAddActiveTag(state, action: PayloadAction<string>) {
+      const tagKey = action.payload;
+      const cacheTag = state.cacheTags.find(item => item.key === tagKey);
 
-      if (!isExistTag) {
-        state.cacheTags.push(activeTag);
+      if (!cacheTag) {
+        const matchRoute = matchKeyRoute('key', tagKey);
+
+        if (matchRoute) {
+          const newTag = {
+            ..._.pick(matchRoute, ['key', 'path']),
+            ..._.pick(matchRoute.meta, ['titleId', 'isHome'])
+          } as NormalTag;
+
+          state.activeTag = newTag;
+          state.cacheTags.push(newTag);
+        } else {
+          throw new Error('切换的tag-key值异常');
+        }
+      } else {
+        state.activeTag = cacheTag;
       }
-
-      state.activeTag = activeTag;
     },
     setTheme(state, action: PayloadAction<SystemState['theme']>) {
       const theme = action.payload;
