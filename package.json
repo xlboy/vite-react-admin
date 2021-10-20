@@ -2,7 +2,9 @@
   "name": "vite-project",
   "version": "0.0.0",
   "scripts": {
+    "bootstrap": "yarn && cd docs && yarn",
     "dev": "vite",
+    "doc:start": "cd docs & npm run start",
     "build": "tsc --pretty --skipLibCheck && vite build",
     "serve": "vite preview"
   },
