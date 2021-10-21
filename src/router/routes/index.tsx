@@ -14,6 +14,13 @@ const routes: BaseRouteItem[] = [
       ...authRoutes,
       ...commonMenuRoutes,
       {
+        path: '403',
+        meta: {
+          titleId: '403 - 无权访问'
+        },
+        element: <RouteWrapper element={lazy(() => import('@/pages/403'))} />
+      },
+      {
         path: '*',
         meta: {
           titleId: '404 - 找不到页面'

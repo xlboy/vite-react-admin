@@ -10,6 +10,7 @@ import _ from 'lodash';
 import React, { Suspense, useEffect, useRef } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 import { useLocation } from 'react-router-dom';
+import ContentAuth from './ContentAuth';
 import Header from './Header';
 import './index.less';
 import Menu from './Menu';
@@ -100,7 +101,9 @@ const LayoutPage: React.FC<LayoutPageProps> = () => {
           <div className="app-layout-content-inside">
             <AppErrorBoundary>
               <Suspense fallback={<AppLoading />}>
-                <Outlet />
+                <ContentAuth>
+                  <Outlet />
+                </ContentAuth>
               </Suspense>
             </AppErrorBoundary>
           </div>
