@@ -1,12 +1,12 @@
 import useStates from '@/hooks/useStates';
 import { useAppIntl } from '@/locales';
-import type { RouteItem as _RouteItem } from '@/router/routes';
-import { matchKeyRoute, matchRouteKeyPaths } from '@/router/utils';
+import { commonMenuRoutes } from '@/router/routes/commonRoutes';
+import type { BaseRouteItem } from '@/router/types';
+import { matchFieldRoute, matchRouteKeyPaths } from '@/router/utils';
 import { rootActions, useAppDispatch, useAppState } from '@/store';
 import type { SystemState } from '@/store/types/system';
-import type { UserState } from '@/store/types/user';
 import { Drawer, Layout, Menu } from 'antd';
-import React, { memo, useCallback, useEffect } from 'react';
+import React, { memo, useCallback, useEffect, useMemo } from 'react';
 import './index.less';
 
 const { SubMenu } = Menu;
@@ -15,11 +15,16 @@ const { Sider } = Layout;
 
 interface LayoutMenu {}
 
-type RouteInfo = _RouteItem & SystemState['activeTag'];
+type RouteInfo = BaseRouteItem & SystemState['activeTag'];
+
+type InsideComponentMenuList = {
+  key: string;
+  children: InsideComponentProps['menuList'];
+}[];
 
 interface InsideComponentProps {
   handleMenuClick(routeInfo: RouteInfo): void;
-  menuList: UserState['menuList'];
+  menuList: InsideComponentMenuList;
   openKeys: string[];
   selectedKeys: string[];
   handleDropDownOpen(keys: React.Key[]): void;
@@ -29,25 +34,24 @@ const InsideComponent: React.FC<InsideComponentProps> = memo(props => {
   const { menuList, handleMenuClick, handleDropDownOpen, openKeys, selectedKeys } = props;
   const { f } = useAppIntl();
 
-  const renderTreeMenu = (menuList: UserState['menuList']): React.ReactNode =>
+  const renderTreeMenu = (menuList: InsideComponentProps['menuList']): React.ReactNode =>
     menuList.map(menu => {
-      const routeInfo = matchKeyRoute('key', menu.key) as RouteInfo | undefined;
+      const { key: menuKey, children: menuChildren } = menu;
+      const routeInfo = matchFieldRoute('key', menuKey) as RouteInfo | undefined;
 
       if (!routeInfo) {
-        throw new Error('菜单权限存在问题，menuList中存在routes未对应上的key值');
+        throw new Error(`菜单权限存在问题，menuList中存在routes未对应上的key值:{${menuKey}}`);
       }
 
       const {
-        key,
         meta: { iconElement, titleId }
       } = routeInfo;
 
-      const { children: menuChildren } = menu;
       const isExistChildren = menuChildren !== undefined && menuChildren.length !== 0;
 
       return isExistChildren ? (
         <SubMenu
-          key={key}
+          key={menuKey}
           title={f(titleId!)}
           icon={iconElement ?? null}
           onTitleClick={handleMenuClick.bind(null, routeInfo)}
@@ -55,7 +59,7 @@ const InsideComponent: React.FC<InsideComponentProps> = memo(props => {
           {renderTreeMenu(menuChildren)}
         </SubMenu>
       ) : (
-        <Menu.Item key={key} icon={iconElement ?? null} onClick={handleMenuClick.bind(null, routeInfo)}>
+        <Menu.Item key={menuKey} icon={iconElement ?? null} onClick={handleMenuClick.bind(null, routeInfo)}>
           {f(titleId!)}
         </Menu.Item>
       );
@@ -79,7 +83,7 @@ const InsideComponent: React.FC<InsideComponentProps> = memo(props => {
 
 const LayoutMenu: React.FC<LayoutMenu> = () => {
   const { activeTag, isMenuCollapsed, isMobile } = useAppState(state => state.system);
-  const { menuList } = useAppState(state => state.user);
+  const userState = useAppState(state => state.user);
   const storeDispatch = useAppDispatch();
   const [{ openKeys, selectedKeys }, setRootState] = useStates({
     openKeys: [] as string[],
@@ -121,6 +125,11 @@ const LayoutMenu: React.FC<LayoutMenu> = () => {
       selectedKeys: [selectdKeys.at(-1) ?? '']
     }));
   }, [activeTag?.key]);
+
+  const menuList = useMemo(
+    () => [...userState.menuList, ...commonMenuRoutes] as InsideComponentMenuList,
+    [userState.menuList]
+  );
 
   const renderCoreMenu = (
     <InsideComponent

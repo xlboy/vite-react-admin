@@ -1,8 +1,8 @@
 import { useAppIntl } from '@/locales';
 import type { ComponentType } from 'react';
 import type { RouteProps } from 'react-router';
-import AuthRoute from './RouteAuth';
-import { matchCurrentPageRoute } from './utils';
+import AuthRoute from '../utils/RouteAuth';
+import { matchCurrentPageRoute } from '.';
 
 type RouteWrapperProps = Omit<RouteProps, 'element'> & {
   auth?: boolean;

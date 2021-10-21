@@ -1,11 +1,11 @@
 import appConfig from '@/configs/app';
 import type { RouteMatch, RouteObject } from 'react-router';
 import { matchRoutes } from 'react-router';
-import type { RouteItem } from './routes';
-import routes from './routes';
+import routes from '../routes';
+import type { BaseRouteItem } from '../types';
 
 interface CurrentRouteMath extends RouteMatch {
-  route: RouteMatch['route'] & RouteItem;
+  route: RouteMatch['route'] & BaseRouteItem;
 }
 
 const getPathname = () => {
@@ -41,10 +41,10 @@ export const matchCurrentPageRoute = (): CurrentRouteMath | null => {
 /**
  * @description 根据指定的字段在router树中匹配出对应的route
  */
-export const matchKeyRoute = (() => {
-  let flatRoutes: RouteItem[] | null = null;
+export const matchFieldRoute = (() => {
+  let flatRoutes: BaseRouteItem[] | null = null;
 
-  const handleFlatRoutes = (_routes: RouteItem[], _flatRoutes: RouteItem[] = []) => {
+  const handleFlatRoutes = (_routes: BaseRouteItem[], _flatRoutes: BaseRouteItem[] = []) => {
     _routes.forEach(route => {
       _flatRoutes.push(route);
       if (route.children !== undefined && route.children.length !== 0) {
@@ -55,8 +55,12 @@ export const matchKeyRoute = (() => {
     return _flatRoutes;
   };
 
-  const insideMatch = <K extends keyof RouteItem>(key: K, value: RouteItem[K]): RouteItem | undefined => {
+  const insideMatch = <K extends keyof BaseRouteItem>(key: K, value: BaseRouteItem[K]): BaseRouteItem | undefined => {
     flatRoutes ??= handleFlatRoutes(routes);
+
+    if (value === undefined) {
+      throw new Error('传进的key为undefined');
+    }
 
     return flatRoutes?.find(item => item[key] === value);
   };
@@ -68,7 +72,7 @@ export const matchKeyRoute = (() => {
  * @description 根据指定的key值在router树中匹配出相关的route路径信息
  */
 export const matchRouteKeyPaths = (() => {
-  let matchResult: RouteItem[] = [];
+  let matchResult: BaseRouteItem[] = [];
 
   const insideMatch = (key: string, _routes = routes): boolean => {
     return _routes.some((item, index) => {
@@ -96,7 +100,7 @@ export const matchRouteKeyPaths = (() => {
     });
   };
 
-  return (key: string): RouteItem[] => {
+  return (key: string): BaseRouteItem[] => {
     matchResult = [];
     insideMatch(key, routes);
 

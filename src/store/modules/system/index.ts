@@ -1,11 +1,10 @@
 import type { LocaleTypes } from '@/locales/types';
-import type { RouteItem } from '@/router/routes';
-import { matchKeyRoute } from '@/router/utils';
+import { matchFieldRoute } from '@/router/utils';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
+import _ from 'lodash';
 import type { SystemState } from '../../types/system';
 import { initAppLocale, initAppTheme } from './utils';
-import _ from 'lodash';
 
 const initialState: SystemState = {
   locale: initAppLocale(),
@@ -72,7 +71,7 @@ const systemSlice = createSlice({
       const cacheTag = state.cacheTags.find(item => item.key === tagKey);
 
       if (!cacheTag) {
-        const matchRoute = matchKeyRoute('key', tagKey);
+        const matchRoute = matchFieldRoute('key', tagKey);
 
         if (matchRoute) {
           const newTag = {
