@@ -28,6 +28,7 @@
     "@typescript-eslint/consistent-type-imports": 2,
     "@typescript-eslint/ban-types": 0,
     "@typescript-eslint/no-empty-function": 0,
+    "@typescript-eslint/no-namespace": 0,
     "react-hooks/exhaustive-deps": 0,
     /* 
       https://eslint.org/docs/rules/padding-line-between-statements#rule-details 

@@ -18,7 +18,7 @@ const routes: BaseRouteItem[] = [
         meta: {
           titleId: '404 - 找不到页面'
         },
-        element: lazy(() => import('@/pages/404'))
+        element: <RouteWrapper element={lazy(() => import('@/pages/404'))} />
       }
     ]
   }

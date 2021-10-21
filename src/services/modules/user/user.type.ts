@@ -1,4 +1,8 @@
-export interface UserInfo {
-  name: string;
-  age: number;
+namespace UserType {
+  export interface Info {
+    name: string;
+    age: number;
+  }
 }
+
+export default UserType;
