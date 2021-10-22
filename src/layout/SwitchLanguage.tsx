@@ -1,15 +1,12 @@
+import appConfig from '@/configs/app';
+import { useAppIntl } from '@/locales';
 import type { LocaleTypes } from '@/locales/types';
+import { rootActions, useAppDispatch, useAppState } from '@/store';
 import type { InUnionFillArrayItem } from '@/types/utils';
 import { TranslationOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Menu } from 'antd';
-import { ReactComponent as IconEnUS } from '../assets/icon-enUS.svg';
-import { ReactComponent as IconZhCN } from '../assets/icon-zhCN.svg';
-import type { SwitchCurrentLocale } from '../types';
-
-interface SwitchLanguageProps {
-  switchCurrentLocale: SwitchCurrentLocale;
-  currentLocale: LocaleTypes;
-}
+import { Button, Dropdown, Menu, message } from 'antd';
+import { ReactComponent as IconEnUS } from '@/assets/icons/icon-enUS.svg';
+import { ReactComponent as IconZhCN } from '@/assets/icons/icon-zhCN.svg';
 
 interface LanguageOption {
   type: LocaleTypes;
@@ -38,8 +35,18 @@ const languageOptions: InUnionFillArrayItem<LanguageOption, LocaleTypes> = [
   }
 ];
 
-const SwitchLanguage: React.FC<SwitchLanguageProps> = props => {
-  const { switchCurrentLocale, currentLocale } = props;
+const SwitchLanguage: React.FC = () => {
+  const { locale: currentLocale } = useAppState(state => state.system);
+  const storeDispatch = useAppDispatch();
+  const { f } = useAppIntl();
+
+  const switchCurrentLocale = (locale: LocaleTypes, label: string) => {
+    const { setLocale } = rootActions.system;
+
+    message.success(f('切换{locale}成功', { locale: label }));
+    localStorage.setItem(appConfig.cacheKey.locale, locale);
+    storeDispatch(setLocale(locale));
+  };
 
   const DropdownMenu = (): JSX.Element => (
     <Menu>
