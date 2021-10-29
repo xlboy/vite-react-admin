@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import { viteMockServe as mock } from 'vite-plugin-mock';
 import svgr from 'vite-plugin-svgr';
+import checker from 'vite-plugin-checker';
 
 const pathResolve = (dir: string) => resolve(__dirname, '.', dir);
 
@@ -16,7 +17,9 @@ export default defineConfig({
     // https://github.com/pd4d10/vite-plugin-svgr
     svgr(),
     // https://github.com/anncwb/vite-plugin-mock/blob/main/README.zh_CN.md
-    mock()
+    mock(),
+    // https://github.com/fi3ework/vite-plugin-checker
+    checker({ typescript: true })
   ],
   resolve: {
     alias: [
