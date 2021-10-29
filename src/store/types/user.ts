@@ -1,4 +1,5 @@
 export interface UserState {
+  userInfo: null | Record<string, string>;
   menuList: MenuItem[];
 }
 

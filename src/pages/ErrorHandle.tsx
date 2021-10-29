@@ -1,4 +1,4 @@
-import useStates from '@/hooks/useStates';
+import { useStates } from '@/hooks';
 
 interface ErrorHandleProps {}
 

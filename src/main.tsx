@@ -5,10 +5,10 @@ import { Suspense, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { IntlProvider } from 'react-intl';
 import { Provider as ReduxProvider } from 'react-redux';
-import AppErrorBoundary from './components/App/ErrorBoundary';
 import AppLoading from './components/App/Loading';
+import { useMount } from './hooks';
 import { getAntdLocale, getAppLocale } from './locales';
-import Router from './router';
+import Router, { appHistory } from './router';
 import store, { rootThunks, useAppDispatch, useAppState } from './store';
 import './styles/index.less';
 
@@ -16,11 +16,15 @@ const App: FC = () => {
   const { locale: currentLocale, theme: currentTheme } = useAppState(state => state.system);
   const storeDispatch = useAppDispatch();
 
-  useEffect(() => {
-    const { user } = rootThunks;
+  useMount(async () => {
+    try {
+      const { initUserInfo } = rootThunks.user;
 
-    storeDispatch(user.initUserInfo());
-  }, []);
+      await storeDispatch(initUserInfo());
+    } catch (error) {
+      appHistory.push('/login');
+    }
+  });
 
   useEffect(() => {
     AntdConfigProvider.config({
@@ -32,13 +36,11 @@ const App: FC = () => {
 
   return (
     <IntlProvider locale={currentLocale.split('_')[0]} messages={initMessage}>
-      <AppErrorBoundary>
-        <Suspense fallback={<AppLoading />}>
-          <AntdConfigProvider locale={getAntdLocale(currentLocale)} componentSize="middle">
-            <Router />
-          </AntdConfigProvider>
-        </Suspense>
-      </AppErrorBoundary>
+      <Suspense fallback={<AppLoading />}>
+        <AntdConfigProvider locale={getAntdLocale(currentLocale)} componentSize="middle">
+          <Router />
+        </AntdConfigProvider>
+      </Suspense>
     </IntlProvider>
   );
 };

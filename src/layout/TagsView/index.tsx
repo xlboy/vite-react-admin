@@ -1,8 +1,12 @@
+import appConfig from '@/configs/app';
+import { useMount, useUpdateEffect } from '@/hooks';
 import { useAppIntl } from '@/locales';
+import { matchCurrentPageRoute, matchRouteKeyPaths } from '@/router/utils';
 import { rootActions, useAppDispatch, useAppState } from '@/store';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { Dropdown, Menu, Tag } from 'antd';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './index.less';
 
 interface LayoutTagsViewProps {}
@@ -10,6 +14,8 @@ interface LayoutTagsViewProps {}
 const LayoutTagsView: React.FC<LayoutTagsViewProps> = props => {
   const { activeTag, cacheTags } = useAppState(state => state.system);
   const storeDispatch = useAppDispatch();
+  const locationVal = useLocation();
+  const navigate = useNavigate();
   const { f } = useAppIntl();
 
   type ActiveTag = Exclude<typeof activeTag, null>;
@@ -62,6 +68,39 @@ const LayoutTagsView: React.FC<LayoutTagsViewProps> = props => {
 
     storeDispatch(switchOrAddActiveTag(tag.key));
   };
+
+  const updateCurrentPageTag = () => {
+    const matchResult = matchCurrentPageRoute();
+
+    // 无key，证明是根目录，无需更新
+    if (!matchResult?.route.key) return;
+
+    const { switchOrAddActiveTag } = rootActions.system;
+
+    storeDispatch(switchOrAddActiveTag(matchResult.route.key));
+  };
+
+  useEffect(updateCurrentPageTag, [locationVal.pathname]);
+  useMount(updateCurrentPageTag);
+
+  useUpdateEffect(() => {
+    if (cacheTags.length === 0) {
+      navigate(appConfig.homePath);
+      updateCurrentPageTag();
+    }
+  }, [cacheTags]);
+
+  useUpdateEffect(() => {
+    if (activeTag) {
+      const matchResult = matchRouteKeyPaths(activeTag.key);
+      const filterTagPath = matchResult
+        .map(item => item.path)
+        .join('/')
+        .replace(/\/{2,}/g, '/');
+
+      navigate(filterTagPath);
+    }
+  }, [activeTag?.key]);
 
   return (
     <div className="app-tags-view">

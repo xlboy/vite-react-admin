@@ -17,7 +17,7 @@ const HeaderBreadcrumb: React.FC<BreadcrumbProps> = props => {
   return (
     <Breadcrumb>
       {routeInfos.map((item, index) => {
-        const { title, path } = item;
+        const { title, path, isSubMenuRoute } = item;
         const isLast = index === routeInfos.length - 1;
         const isFirstOneAndRootPath = index === 0 && path === '/';
 
@@ -27,7 +27,7 @@ const HeaderBreadcrumb: React.FC<BreadcrumbProps> = props => {
               <Link to={path}>
                 <HomeOutlined style={{ cursor: 'pointer' }} />
               </Link>
-            ) : isLast ? (
+            ) : isLast || isSubMenuRoute ? (
               title
             ) : (
               <Link to={path}>{title}</Link>

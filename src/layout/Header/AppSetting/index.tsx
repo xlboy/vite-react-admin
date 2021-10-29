@@ -1,5 +1,5 @@
 import appConfig from '@/configs/app';
-import useStates from '@/hooks/useStates';
+import { useStates } from '@/hooks';
 import { useAppIntl } from '@/locales';
 import { rootActions, useAppDispatch, useAppState } from '@/store';
 import { SettingOutlined } from '@ant-design/icons';

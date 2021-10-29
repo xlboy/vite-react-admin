@@ -1,4 +1,4 @@
-import useStates from '@/hooks/useStates';
+import { useStates } from '@/hooks';
 import { useAppIntl } from '@/locales';
 import type { SystemState } from '@/store/types/system';
 import { Badge, Button, Popover } from 'antd';

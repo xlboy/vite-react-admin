@@ -1,7 +1,11 @@
+import AppErrorBoundary from '@/components/App/ErrorBoundary';
 import appConfig from '@/configs/app';
+import { createBrowserHistory, createHashHistory } from 'history';
 import React from 'react';
-import { BrowserRouter, HashRouter, useRoutes } from 'react-router-dom';
+import { useRoutes } from 'react-router-dom';
 import routes from './routes';
+import RouteChangeWrapper from './utils/RouteChangeWrapper';
+import RouterWrapper from './utils/RouterWrapper';
 
 const RenderRouter: React.FC = () => {
   const element = useRoutes(routes);
@@ -9,13 +13,21 @@ const RenderRouter: React.FC = () => {
   return element;
 };
 
-export default (): JSX.Element => {
-  const isHash = appConfig.routerMode === 'hash';
-  const WithRouter = isHash ? HashRouter : BrowserRouter;
+/**
+ * @see https://github.com/ReactTraining/history/tree/master/docs/api-reference.md#createhashhistory
+ */
+export const appHistory = appConfig.routerMode === 'hash' ? createHashHistory() : createBrowserHistory();
 
+export const notLoginRoutePaths = ['/login'];
+
+export default (): JSX.Element => {
   return (
-    <WithRouter>
-      <RenderRouter />
-    </WithRouter>
+    <RouterWrapper history={appHistory}>
+      <AppErrorBoundary>
+        <RouteChangeWrapper>
+          <RenderRouter />
+        </RouteChangeWrapper>
+      </AppErrorBoundary>
+    </RouterWrapper>
   );
 };

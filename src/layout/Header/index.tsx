@@ -1,4 +1,5 @@
-import { ReactComponent as IconAntd } from '@/assets/icons/icon-antd.svg';
+import AppLogoImg from '@/assets/images/logo-app.png';
+import appConfig from '@/configs/app';
 import SwitchLanguage from '@/layout/SwitchLanguage';
 import { useAppIntl } from '@/locales';
 import { matchCurrentPageRoutes } from '@/router/utils';
@@ -28,12 +29,13 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = () => {
     const matchResult = matchCurrentPageRoutes();
 
     return (
-      matchResult?.map(({ pathname, route: { meta } }) => ({
+      matchResult?.map(({ pathname, route: { meta, element } }) => ({
         title: meta?.titleId ? f(meta.titleId) : '',
-        path: pathname
+        path: pathname,
+        isSubMenuRoute: !element
       })) ?? []
     );
-  }, [locationVal]);
+  }, [locationVal.pathname]);
 
   const switchIsMenuCollapsed = () => {
     const { setIsMenuCollapsed } = rootActions.system;
@@ -46,7 +48,8 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = () => {
       <div className="app-header-left-menu">
         {!isMobile && (
           <div className={classNames('app-header-logo', { collapsed: isMenuCollapsed })}>
-            <IconAntd className="icon" />
+            <img src="https://cn.vitejs.dev/logo.svg" width={40} alt="app-logo" />
+            {!isMenuCollapsed && <span className="app-header-logo__title">{appConfig.name}</span>}
           </div>
         )}
         <MenuCollapsedIcon

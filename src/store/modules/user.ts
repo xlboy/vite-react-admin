@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { UserState } from '../types/user';
 
 const initialState: UserState = {
+  userInfo: {},
   menuList: []
 };
 

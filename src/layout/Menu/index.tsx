@@ -1,4 +1,4 @@
-import useStates from '@/hooks/useStates';
+import { useStates } from '@/hooks';
 import { useAppIntl } from '@/locales';
 import { commonMenuRoutes } from '@/router/routes/commonRoutes';
 import type { BaseRouteItem } from '@/router/types';
