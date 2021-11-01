@@ -14,24 +14,24 @@ interface LanguageOption {
   iconComponent: JSX.Element;
 }
 
-const languageIconStyle: React.CSSProperties = { width: 20, height: 25 };
+const languageIconClassName = 'w-20px h-50px';
 
 const languageOptions: InUnionFillArrayItem<LanguageOption, LocaleTypes> = [
   {
     type: 'zh-CN',
     label: '简体中文',
-    iconComponent: <IconZhCN style={languageIconStyle} />
+    iconComponent: <IconZhCN className={languageIconClassName} />
   },
 
   {
     type: 'zh-TW',
     label: '繁体中文',
-    iconComponent: <IconZhCN style={languageIconStyle} />
+    iconComponent: <IconZhCN className={languageIconClassName} />
   },
   {
     type: 'en-US',
     label: 'English',
-    iconComponent: <IconEnUS style={languageIconStyle} />
+    iconComponent: <IconEnUS className={languageIconClassName} />
   }
 ];
 
@@ -55,7 +55,7 @@ const SwitchLanguage: React.FC = () => {
           key={type}
           icon={iconComponent}
           disabled={currentLocale === type}
-          style={{ display: 'flex', alignItems: 'center', height: 28 }}
+          className="flex items-center !h-28px"
           onClick={switchCurrentLocale.bind(null, type, label)}
         >
           {label}
@@ -66,7 +66,7 @@ const SwitchLanguage: React.FC = () => {
 
   return (
     <Dropdown overlay={<DropdownMenu />} placement="bottomCenter" arrow>
-      <Button type="text" icon={<TranslationOutlined />} style={{ height: '100%' }}></Button>
+      <Button type="text" icon={<TranslationOutlined />} />
     </Dropdown>
   );
 };

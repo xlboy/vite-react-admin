@@ -11,6 +11,7 @@ import { getAntdLocale, getAppLocale } from './locales';
 import Router, { appHistory } from './router';
 import store, { rootThunks, useAppDispatch, useAppState } from './store';
 import './styles/index.less';
+import 'virtual:windi.css';
 
 const App: FC = () => {
   const { locale: currentLocale, theme: currentTheme } = useAppState(state => state.system);

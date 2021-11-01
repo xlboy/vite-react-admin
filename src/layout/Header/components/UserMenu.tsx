@@ -15,7 +15,7 @@ const UserMenu: React.FC<UserMenuProps> = () => {
 
   return (
     <Dropdown overlay={<DropdownMenu />} placement="bottomCenter" arrow>
-      <Button type="text" style={{ height: '100%' }}>
+      <Button type="text" className="h-full">
         admin
       </Button>
     </Dropdown>

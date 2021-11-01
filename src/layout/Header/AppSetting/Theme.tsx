@@ -41,7 +41,7 @@ const ColorPickerRow: React.FC<CoreColorsPickerProps> = props => {
       }
       trigger="click"
     >
-      <Button type="text" block style={{ textAlign: 'left' }}>
+      <Button type="text" block className="text-left">
         <Badge color={currentColor} text={themeName} />
       </Button>
     </Popover>

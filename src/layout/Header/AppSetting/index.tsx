@@ -40,7 +40,7 @@ const AppSetting: React.FC<AppSettingProps> = () => {
 
   return (
     <>
-      <Button type="text" icon={<SettingOutlined />} style={{ height: '100%' }} onClick={handleOpenSetting}></Button>
+      <Button type="text" icon={<SettingOutlined />} className="h-full" onClick={handleOpenSetting} />
       <Drawer
         width="300"
         placement="right"

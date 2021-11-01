@@ -25,7 +25,7 @@ const HeaderBreadcrumb: React.FC<BreadcrumbProps> = props => {
           <Breadcrumb.Item key={title}>
             {isFirstOneAndRootPath ? (
               <Link to={path}>
-                <HomeOutlined style={{ cursor: 'pointer' }} />
+                <HomeOutlined />
               </Link>
             ) : isLast || isSubMenuRoute ? (
               title

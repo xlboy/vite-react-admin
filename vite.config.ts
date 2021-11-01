@@ -4,6 +4,7 @@ import { defineConfig } from 'vite';
 import { viteMockServe as mock } from 'vite-plugin-mock';
 import svgr from 'vite-plugin-svgr';
 import checker from 'vite-plugin-checker';
+import windiCSS from 'vite-plugin-windicss';
 
 const pathResolve = (dir: string) => resolve(__dirname, '.', dir);
 
@@ -19,7 +20,9 @@ export default defineConfig({
     // https://github.com/anncwb/vite-plugin-mock/blob/main/README.zh_CN.md
     mock(),
     // https://github.com/fi3ework/vite-plugin-checker
-    checker({ typescript: true })
+    checker({ typescript: true }),
+    // https://github.com/windicss/windicss
+    windiCSS()
   ],
   resolve: {
     alias: [
