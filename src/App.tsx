@@ -2,25 +2,23 @@ import { ConfigProvider as AntdConfigProvider } from 'antd';
 import 'antd/dist/antd.variable.less';
 import type { FC } from 'react';
 import { Suspense, useEffect, useMemo } from 'react';
-import ReactDOM from 'react-dom';
 import { IntlProvider } from 'react-intl';
-import { Provider as ReduxProvider } from 'react-redux';
 import AppLoading from './components/App/Loading';
 import { useMount } from './hooks';
 import { getAntdLocale, getAppLocale } from './locales';
 import Router, { appHistory } from './router';
-import store, { rootThunks, useAppDispatch, useAppState } from './store';
+import { rootThunks, useAppDispatch, useAppState } from './store';
 import './styles/index.less';
 import 'virtual:windi.css';
 import { ThemeSwitcherProvider } from 'react-css-theme-switcher';
 import { systemActions } from './store/modules/system';
 
-const isDev = false;
+const isDev = import.meta.env.MODE === 'development';
 
 const themes = {
-  light: isDev ? '../node_modules/antd/dist/antd.css' : 'https://cdn.jsdelivr.net/npm/antd@4.17.2/dist/antd.css',
+  light: isDev ? '../node_modules/antd/dist/antd.less' : 'https://cdn.jsdelivr.net/npm/antd@4.17.2/dist/antd.css',
   dark: isDev
-    ? '../node_modules/antd/dist/antd.dark.css'
+    ? '../node_modules/antd/dist/antd.dark.less'
     : 'https://cdn.jsdelivr.net/npm/antd@4.17.2/dist/antd.dark.css'
 };
 
@@ -82,9 +80,4 @@ const App: FC = () => {
   );
 };
 
-ReactDOM.render(
-  <ReduxProvider store={store}>
-    <App />
-  </ReduxProvider>,
-  document.getElementById('root')
-);
+export default App;

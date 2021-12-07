@@ -11,6 +11,7 @@ import { useLocation } from 'react-router';
 import AppSetting from './AppSetting';
 import HeaderBreadcrumb from './components/Breadcrumb';
 import MenuCollapsedIcon from './components/MenuCollapsedIcon';
+import ThemeModeSwitch from './components/ThemeModeSwitch';
 import UserMenu from './components/UserMenu';
 import './index.less';
 import type { RouteInfos } from './types';
@@ -44,7 +45,7 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = () => {
   };
 
   return (
-    <Header className="app-header">
+    <Header className="app-header bg-2">
       <div className="app-header-left-menu">
         {!isMobile && (
           <div className={classNames('app-header-logo', { collapsed: isMenuCollapsed })}>
@@ -60,6 +61,7 @@ const LayoutHeader: React.FC<LayoutHeaderProps> = () => {
         <HeaderBreadcrumb routeInfos={routeInfos} />
       </div>
       <div className="app-header-right-menu">
+        <ThemeModeSwitch />
         <SwitchLanguage />
         <UserMenu />
         <AppSetting />

@@ -6,9 +6,13 @@ import _ from 'lodash';
 import type { SystemState } from '../../types/system';
 import { initAppLocale, initAppTheme } from './utils';
 
+const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+const userTheme = localStorage.getItem('theme') as SystemState['mode'];
+
 const initialState: SystemState = {
   locale: initAppLocale(),
   theme: initAppTheme(),
+  mode: userTheme || systemTheme,
   cacheTags: [],
   activeTag: null,
   isMobile: false,
@@ -92,6 +96,23 @@ const systemSlice = createSlice({
       const theme = action.payload;
 
       Object.assign(state.theme, theme);
+    },
+    setSystemState(state, action: PayloadAction<Partial<SystemState>>) {
+      Object.assign(state, action.payload);
+
+      if (action.payload.mode) {
+        const body = document.body;
+
+        if (action.payload.mode === 'dark') {
+          if (!body.hasAttribute('theme-mode')) {
+            body.setAttribute('theme-mode', 'dark');
+          }
+        } else {
+          if (body.hasAttribute('theme-mode')) {
+            body.removeAttribute('theme-mode');
+          }
+        }
+      }
     }
   }
 });
